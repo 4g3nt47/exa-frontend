@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.main-page{
+  max-width: 1600px;
+}
+
+header nav a{
+  @apply text-lg mx-2 hover:text-green-400 duration-300;
+}
+
+.main-content{
+  min-height: 400px;
+}
+
+.main-content h3{
+  @apply text-center text-3xl pb-10;
+}
+
+.login-form input[type='text'], .login-form input[type='password']{
+  @apply block w-full my-1 mb-3 border-2 border-black rounded-md px-1;
+}
+
+.login-form input[type='submit']{
+  @apply block w-full py-1 px-5 mt-7 bg-blue-600 bg-opacity-30 border-2 border-blue-800 text-black text-lg rounded-md hover:bg-opacity-70 duration-200;
+}
