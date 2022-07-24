@@ -12,6 +12,8 @@
     }
   };
 
+  const curr = false;
+
 </script>
 
 <header class="flex justify-between py-5 px-5 mb-10 bg-gray-800 text-white">
@@ -21,9 +23,7 @@
   </div>
   <nav class="self-center">
     {#each session.pages as p}
-      {#if (!(session.loggedIn && p === "Login"))}
-        <a href="#" on:click={() => switchPage(p)}>{p}</a>
-      {/if}
+      <a class={"text-lg mx-2 " + (session.page === p ? "text-green-400" : "hover:text-green-400 duration-300")} href="#" on:click={() => switchPage(p)}>{p}</a>
     {/each}
   </nav>
 </header>

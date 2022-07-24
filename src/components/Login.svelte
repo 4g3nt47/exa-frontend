@@ -1,16 +1,20 @@
 <script>
   
   import {createEventDispatcher} from 'svelte';
-  const dispatch = createEventDispatcher();
+  import FormSuccess from './FormSuccess.svelte';
+  import FormError from './FormError.svelte';
 
   export let session = {};
+  let success = "";
+  let error = "";
+  const dispatch = createEventDispatcher();
   let fields = {username: "", password: ""};
-  export let error = "";
 
   session.loggedIn = false;
 
   const login = async () => {
     
+    success = "";
     error = "";
     const btn = document.getElementById("login");
     btn.disabled = true;
@@ -28,7 +32,8 @@
         throw new Error(data.error);
       session.loggedIn = true;
       session.username = fields.username;
-      dispatch('switchPage', 'Home');
+      success = "Authentication successful!"
+      setTimeout(() => dispatch('switchPage', 'Home'), 1000);
     }catch(err){
       error = err.message;
     }finally{
@@ -39,13 +44,12 @@
 </script>
 
 <h3>Login</h3>
-<form on:submit|preventDefault={login} class="login-form w-1/3 rounded-md border-2 border-black shadow-lg shadow-gray-600 p-5 mx-auto">
+<form on:submit|preventDefault={login}>
   <label for="username">Username:</label>
   <input type="text" id="username" placeholder="Username..." bind:value={fields.username} required>
   <label for="password">Password:</label>
   <input type="password" id="password" placeholder="Password..." bind:value={fields.password} required>
   <input type="submit" id="login" value="Login">
-  {#if (error.length > 0)}
-    <div class="bg-red-500 mt-5 py-1 pl-2 bg-opacity-20 text-black border-l-4 border-red-800">{error}</div>
-  {/if}
+  <FormSuccess {success}/>
+  <FormError {error}/>
 </form>
