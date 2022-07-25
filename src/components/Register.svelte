@@ -12,7 +12,9 @@
   const fields = {
     username: "",
     password: "",
-    confPassword: ""
+    confPassword: "",
+    name: "",
+    gender: "male"
   };
 
   const register = async () => {
@@ -36,10 +38,7 @@
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          username: fields.username,
-          password: fields.password
-        })
+        body: JSON.stringify(fields)
       });
       const data = await rsp.json();
       if (rsp.status !== 200)
@@ -65,6 +64,13 @@
   <input type="password" id="password" placeholder="Password..." bind:value={fields.password} required>
   <label for="conf-password">Confirm password:</label>
   <input type="password" id="conf-password" placeholder="Confirm password..." bind:value={fields.confPassword} required>
+  <label for="name">Full Name:</label>
+  <input type="text" id="name" placeholder="Your full name..." bind:value={fields.name} required>
+  <label for="gender">Gender:</label>
+  <div id="gender" class="w-full text-center pl-10 space-x-1">
+    <input type="radio" id="male" name="gender" value="Male" on:click={() => fields.gender = "male"} checked><label for="male">Male</label>
+    <input type="radio" id="female" name="gender" value="Female" on:click={() => fields.gender = "female"}><label for="female">Female</label>
+  </div>
   <input type="submit" id="submit" value="Register">
   <SuccessMsg {success}/>
   <ErrorMsg {error}/>
