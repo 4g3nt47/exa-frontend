@@ -3,6 +3,7 @@
   import {createEventDispatcher} from 'svelte';
   import SuccessMsg from './SuccessMsg.svelte';
   import ErrorMsg from './ErrorMsg.svelte';
+  import Button from './Button.svelte';
 
   export let session = {};
   let success = "";

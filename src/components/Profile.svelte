@@ -1,5 +1,6 @@
 <script>
   import {onMount} from 'svelte';
+  import Loader from './Loader.svelte';
   import SuccessMsg from './SuccessMsg.svelte';
   import ErrorMsg from './ErrorMsg.svelte';
 
@@ -25,11 +26,13 @@
 </script>
 
 <h3>Profile</h3>
-<div class="w-1/2 mx-auto border-2 border-black rounded-2xl p-5">
+<div class="w-1/2 mx-auto p-5">
   {#if (profile == null && error.length === 0)}
-    <p>Loading data, please wait...</p>
+    <Loader>Loading profile...</Loader>
   {:else if (profile !== null)}
     <p>Username: {profile.username}</p>
+    <p>Member since: {new Date(profile.creationDate).toLocaleString()}</p>
+    <p>Courses taken: {profile.results.length}</p>
   {/if}
   <ErrorMsg {error}/>
 </div>

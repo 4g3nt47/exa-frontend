@@ -58,13 +58,16 @@
     let page = e.detail;
     if (page === "Logout")
       page = "Login";
-    session.pages = ["Home", "Login", "Register", "About"];
     if (page === "Login" || page === "Register")
       session = createSession(); // Destroy the current session
     session.page = page;
     if (session.loggedIn === true){
       session.pages[1] = "Profile";
       session.pages[2] = "Logout";
+      if (session.admin){
+        session.pages[3] = "Admin";
+        session.pages[4] = "About";
+      }
       session.pages = session.pages;
     }
     saveSession();
