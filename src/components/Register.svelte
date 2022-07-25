@@ -1,8 +1,8 @@
 <script>
 
   import {createEventDispatcher} from 'svelte';
-  import FormSuccess from './FormSuccess.svelte';
-  import FormError from './FormError.svelte';
+  import SuccessMsg from './SuccessMsg.svelte';
+  import ErrorMsg from './ErrorMsg.svelte';
 
   export let session = {};
   const dispatch = createEventDispatcher();
@@ -66,6 +66,6 @@
   <label for="conf-password">Confirm password:</label>
   <input type="password" id="conf-password" placeholder="Confirm password..." bind:value={fields.confPassword} required>
   <input type="submit" id="submit" value="Register">
-  <FormSuccess {success}/>
-  <FormError {error}/>
+  <SuccessMsg {success}/>
+  <ErrorMsg {error}/>
 </form>
