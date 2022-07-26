@@ -1,4 +1,5 @@
 <script>
+
   import {onMount} from 'svelte';
   import Loader from './Loader.svelte';
   import SuccessMsg from './SuccessMsg.svelte';
@@ -31,7 +32,7 @@
     <Loader>Loading profile...</Loader>
   {:else if (profile !== null)}
     <div class="info-card mx-auto flex rounded-2xl p-5 shadow-lg shadow-gray-600">
-      <img class="profile-avatar border-gray-700" src={session.api + "/static/avatars/avatar.png"} alt="My avatar">
+      <img class="profile-avatar border-gray-700" src={session.api + "/" +  profile.avatar} alt="My avatar">
       <div class="text-left ml-2 w-full">
         <table>
           <tr>

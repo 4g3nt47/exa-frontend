@@ -19,7 +19,7 @@ form{
 }
 
 form input[type='text'], form input[type='password']{
-  @apply block w-full my-1 mb-3 border-2 border-black rounded-md px-1;
+  @apply block w-full my-1 mb-3 leading-7 border-2 border-black rounded-md px-1;
 }
 
 form input[type='submit']{

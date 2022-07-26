@@ -1,5 +1,5 @@
 <script>
-  
+
   import {createEventDispatcher} from 'svelte';
   import SuccessMsg from './SuccessMsg.svelte';
   import ErrorMsg from './ErrorMsg.svelte';
@@ -51,5 +51,5 @@
   <input type="password" id="password" placeholder="Password..." bind:value={fields.password} required>
   <input type="submit" id="login" value="Login">
   <SuccessMsg {success}/>
-  <ErrorMsg {error}/>
+  <ErrorMsg {error}/>    
 </form>
