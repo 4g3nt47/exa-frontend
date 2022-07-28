@@ -1,6 +1,6 @@
 <script>
-
-  import {createEventDispatcher} from 'svelte';
+  
+  import {onMount, createEventDispatcher} from 'svelte';
   import SuccessMsg from './SuccessMsg.svelte';
   import ErrorMsg from './ErrorMsg.svelte';
   import Button from './Button.svelte';
@@ -41,10 +41,15 @@
       btn.value = "Login";
     }
   };
+
+  onMount(() => {
+    document.getElementById('username').focus();
+  });
+  
 </script>
 
 <h3>Login</h3>
-<form on:submit|preventDefault={login}>
+<form class="login-form" on:submit|preventDefault={login}>
   <label for="username">Username:</label>
   <input type="text" id="username" placeholder="Username..." bind:value={fields.username} required>
   <label for="password">Password:</label>

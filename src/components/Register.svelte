@@ -1,6 +1,6 @@
 <script>
 
-  import {createEventDispatcher} from 'svelte';
+  import {onMount, createEventDispatcher} from 'svelte';
   import SuccessMsg from './SuccessMsg.svelte';
   import ErrorMsg from './ErrorMsg.svelte';
 
@@ -55,11 +55,15 @@
       btn.value = "Register";
     }
   };
+
+  onMount(() => {
+    document.getElementById('username').focus();
+  });
   
 </script>
 
 <h3>Register</h3>
-<form id="register" on:submit|preventDefault={register}>
+<form id="register" class="signup-form" on:submit|preventDefault={register}>
   <label for="username">Username:</label>
   <input type="text" id="username" placeholder="Username..." bind:value={fields.username} required>
   <label for="password">Password:</label>
@@ -69,7 +73,7 @@
   <label for="name">Full Name:</label>
   <input type="text" id="name" placeholder="Your full name..." bind:value={fields.name} required>
   <label for="gender">Gender:</label>
-  <div id="gender" class="w-full text-center pl-10 space-x-1">
+  <div id="gender" class="w-full pl-10 mb-2 space-x-1">
     <input type="radio" id="male" name="gender" value="Male" on:click={() => fields.gender = "male"} checked><label for="male">Male</label>
     <input type="radio" id="female" name="gender" value="Female" on:click={() => fields.gender = "female"}><label for="female">Female</label>
   </div>

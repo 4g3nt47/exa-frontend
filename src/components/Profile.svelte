@@ -31,7 +31,7 @@
   {#if (profile == null && error.length === 0)}
     <Loader>Loading profile...</Loader>
   {:else if (profile !== null)}
-    <div class="info-card mx-auto flex rounded-2xl p-5 shadow-lg shadow-gray-600">
+    <div class="info-card mx-auto flex rounded-2xl p-5 shadow-lg shadow-gray-600 items-center">
       <img class="profile-avatar border-gray-700" src={session.api + "/" +  profile.avatar} alt="My avatar">
       <div class="text-left ml-2 w-full">
         <table>
@@ -47,11 +47,6 @@
             <th>Joined on:</th>
             <td>{new Date(profile.creationDate).toLocaleString()}</td>
           </tr>
-          <tr>
-            <th>Courses taken:</th>
-            <td>{profile.results.length}</td>
-          </tr>
-
         </table>
       </div>
     </div>
@@ -72,12 +67,12 @@
   table th{
     text-align: right;
     padding-right: 10px;
-    width: 150px;
+    width: 130px;
   }
 
   .profile-avatar{
-    width: 110px;
-    height: 110px;
+    width: 150px;
+    height: 120px;
     border-radius: 50%;
     border: 2px solid;
   }

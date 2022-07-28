@@ -7,7 +7,7 @@
     <slot></slot>
   </button>
 {:else if (type === "secondary")}
-  <button class="w-full py-1 bg-green-900 border-2 border-green-900 bg-opacity-75 hover:bg-opacity-90 duration-200 text-white text-lg rounded-md" on:click>
+  <button class="w-full py-1 bg-green-900 border-2 border-green-900 bg-opacity-75 hover:bg-opacity-90 duration-200 text-white text-lg rounded-md" type="button" on:click>
     <slot></slot>
   </button>
 {:else if (type === "danger")}

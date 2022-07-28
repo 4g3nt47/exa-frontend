@@ -1,7 +1,6 @@
 <script>
 
   import {createEventDispatcher} from 'svelte';
-  import Logo from '../assets/logo.png';
   const dispatch = createEventDispatcher();
 
   export let session = {};
@@ -18,7 +17,7 @@
 
 <header class="flex justify-between py-5 px-5 mb-10 bg-gray-800 text-white">
   <div class="flex">    
-    <img src={Logo} class="h-10" alt="">
+    <img src='/favicon.ico' class="h-10" alt="">
     <h3 class="self-center text-4xl text-gray-300">Exa</h3>
   </div>
   <nav class="self-center">
