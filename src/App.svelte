@@ -16,8 +16,10 @@
       username: "",
       loggedIn: false,
       admin: false,
+      pages: ["Home", "Login", "Register", "About"],
       page: "Login",
-      pages: ["Home", "Login", "Register", "About"]
+      subPage: "",
+      cache: {}
     };
   };
 

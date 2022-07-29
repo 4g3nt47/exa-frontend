@@ -6,9 +6,12 @@
   const dispatch = createEventDispatcher();
 
   let page = "main";
+  if (session.subPage)
+    page = session.subPage;
 
   const switchPage = (newPage) => {
     page = newPage;
+    session.subPage = page;
     dispatch('updateSession', session);
   };
   
@@ -31,7 +34,7 @@
     </div>
   </div>
 {:else if (page === 'newCourse')}
-  <CreateCourse {session} on:abort={() => page = 'main'}/>
+  <CreateCourse {session} on:updateSession on:abort={() => switchPage('main')}/>
 {:else if (page === 'importCourse')}
   <h3>Import Course</h3>
 {:else if (page === 'exportResult')}

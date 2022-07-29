@@ -3,11 +3,13 @@
   import {onMount, createEventDispatcher} from 'svelte';
   import SuccessMsg from './SuccessMsg.svelte';
   import ErrorMsg from './ErrorMsg.svelte';
+  import Button from './Button.svelte';
 
   export let session = {};
   const dispatch = createEventDispatcher();
   let success = ""
   let error = "";
+  let submitBtn;
 
   const fields = {
     username: "",
@@ -29,9 +31,8 @@
       error = "Password too weak!";
       return;
     }
-    const btn = document.getElementById('submit');
-    btn.value = "Creating account...";
-    btn.disabled = true;
+    submitBtn.innerText = "Creating account...";
+    submitBtn.disabled = true;
     try{
       const formData = new FormData();
       for (let param in fields)
@@ -51,8 +52,8 @@
     }catch(err){
       error = err.message;
     }finally{
-      btn.disabled = false;
-      btn.value = "Register";
+      submitBtn.disabled = false;
+      submitBtn.innerText = "Register";
     }
   };
 
@@ -79,7 +80,9 @@
   </div>
   <label for="file">Profile picture:</label>
   <input class="mt-2 w-full" type="file" name="file" id="file" required>
-  <input type="submit" id="submit" value="Register">
+  <div class="mt-5">
+    <Button bind:btn={submitBtn} btnType="submit">Register</Button>
+  </div>
   <SuccessMsg {success}/>
   <ErrorMsg {error}/>
 </form>

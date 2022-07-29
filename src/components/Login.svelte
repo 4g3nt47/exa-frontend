@@ -5,19 +5,19 @@
   import ErrorMsg from './ErrorMsg.svelte';
   import Button from './Button.svelte';
 
+  const dispatch = createEventDispatcher();
   export let session = {};
   let success = "";
   let error = "";
-  const dispatch = createEventDispatcher();
   let fields = {username: "", password: ""};
+  let submitBtn;
 
   const login = async () => {
     
     success = "";
     error = "";
-    const btn = document.getElementById("login");
-    btn.disabled = true;
-    btn.value = "Login in...";
+    submitBtn.disabled = true;
+    submitBtn.innerText = "Login in...";
     try{
       const rsp = await fetch(`${session.api}/user/login`, {
         method: "POST",
@@ -37,8 +37,8 @@
     }catch(err){
       error = err.message;
     }finally{
-      btn.disabled = false;
-      btn.value = "Login";
+      submitBtn.disabled = false;
+      submitBtn.innerText = "Login";
     }
   };
 
@@ -54,7 +54,9 @@
   <input type="text" id="username" placeholder="Username..." bind:value={fields.username} required>
   <label for="password">Password:</label>
   <input type="password" id="password" placeholder="Password..." bind:value={fields.password} required>
-  <input type="submit" id="login" value="Login">
+  <div class="mt-5">
+    <Button bind:btn={submitBtn} btnType="submit">Login</Button>
+  </div>
   <SuccessMsg {success}/>
   <ErrorMsg {error}/>    
 </form>
