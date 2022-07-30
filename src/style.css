@@ -607,16 +607,12 @@ video {
   margin-top: 0.5rem;
 }
 
-.ml-10 {
-  margin-left: 2.5rem;
-}
-
 .mb-5 {
   margin-bottom: 1.25rem;
 }
 
-.mt-8 {
-  margin-top: 2rem;
+.ml-10 {
+  margin-left: 2.5rem;
 }
 
 .flex {
@@ -994,7 +990,21 @@ form input[type='submit']:hover {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   --tw-shadow-color: #4b5563;
   --tw-shadow: var(--tw-shadow-colored);
+}
+
+.admin-menu-card:hover {
+  --tw-text-opacity: 1;
+  color: rgb(74 222 128 / var(--tw-text-opacity));
+}
+
+.admin-menu-card{
   min-height: 180px;
+  opacity: 0.9;
+  transition: opacity 0.1s;
+}
+
+.admin-menu-card:hover{
+  opacity: 1;
 }
 
 .hover\:bg-opacity-90:hover {

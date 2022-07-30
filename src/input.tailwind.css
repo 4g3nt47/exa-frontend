@@ -28,6 +28,12 @@ form input[type='submit']{
 }
 
 .admin-menu-card{
-  @apply flex items-end pb-3 justify-center text-xl rounded-lg shadow-lg shadow-gray-600 cursor-pointer;
+  @apply flex items-end pb-3 justify-center text-xl rounded-lg shadow-lg shadow-gray-600 cursor-pointer hover:text-green-400;
   min-height: 180px;
+  opacity: 0.9;
+  transition: opacity 0.1s;
+}
+
+.admin-menu-card:hover{
+  opacity: 1;
 }

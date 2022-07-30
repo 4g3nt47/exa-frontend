@@ -32,8 +32,8 @@
     title: "",
     releaseDate: "",
     password: "",
-    questionsPerTest: 0,
-    duration: 1.5,
+    questionsCount: 3,
+    duration: 30,
     passingScore: 50,
     newQuestion: createQuestion(),
     questions: []
@@ -45,18 +45,21 @@
     dispatch('updateSession', session);
   };
 
+  const abort = () => {
+    session.cache.createCourseFields = undefined;
+    dispatch('abort');
+  };
+
   const gotoPrevious = () => {
 
     clearMessages();
     if (stage === 1){
-      if (confirm("Discard the current course data?")){
-        session.cache.createCourseFields = undefined;
-        return dispatch('abort');
-      }
+      if (confirm("Discard the current course data?"))
+        abort();
     }else{
       stage--;
+      updateCache();
     }
-    updateCache();
   }
 
   const gotoNext = () => {
@@ -70,16 +73,12 @@
         return;
       }
     }
-    if (stage >= 3){ // Create the course
-      createCourse().then(() => {
-        success = "Course created successfully!";
-        session.cache.createCourseFields = undefined; // Take out the cache!
-        setTimeout(() => dispatch('abort'), 2000);
-      }).catch(err => {
-        error = err.message;
-      });
+    if (stage === 3){ // Create the course
+      createCourse();
     }else{
       stage++;
+      if (stage === 3)
+        setTimeout(() => document.getElementById('question').focus(), 500);
     }
     updateCache();
   }
@@ -99,16 +98,66 @@
     fields.questions.push(fields.newQuestion);
     fields.newQuestion = createQuestion();
     updateCache();
+    document.getElementById('question').focus();
   };
 
   const createCourse = async () => {
     
-    if (!avatar)
-      throw new Error("Course avatar is required, please go back and choose one.");
-    if (fields.questions.length < 10 || fields.questionsPerTest > fields.questions.length)
-      throw new Error("Not enough questions!");
+    clearMessages();
+    try{
+      if (!fields.name)
+        throw new Error("Course name not defined!");
+      if (!fields.title)
+        throw new Error("Course title not defined!");
+      if (!fields.releaseDate)
+        throw new Error("Release date is not defined!");
+      if (fields.questions.length < 5 || fields.questionsCount > fields.questions.length)
+        throw new Error("Not enough questions!");
+      if (fields.questionsCount < 1)
+        throw new Error("Questions count per test too small!");
+      if (!fields.passingScore)
+        throw new Error("Passing score not defined!");
+      if (!fields.duration)
+        throw new Error("Seconds per question not defined!");
+      if (!avatar)
+        throw new Error("Course avatar is required, please go back and choose one.");      
+    }catch(err){
+      error = err.message;
+      return;
+    }
     nextBtn.innerText = "Creating...";
     nextBtn.disabled = true;
+    prevBtn.disabled = true;
+    try{
+      const formData = new FormData();
+      formData.append("releaseDate", new Date(fields.releaseDate).getTime());
+      formData.append("duration", fields.duration * 1000);
+      for (let name in fields){
+        if (!formData.has(name)){
+          if (name === 'questions')
+            formData.append(name, JSON.stringify(fields[name]));
+          else
+            formData.append(name, fields[name]);
+        }
+      }
+      formData.append('file', avatar);
+      const rsp = await fetch(`${session.api}/course/create`, {
+        method: 'POST',
+        credentials: 'include',
+        body: formData
+      });
+      const data = await rsp.json();
+      if (rsp.status !== 200)
+        throw new Error(data.error);
+      success = data.success;
+      setTimeout(abort, 3000);
+    }catch(err){
+      error = err.message;
+    }finally{
+      nextBtn.disabled = false;
+      prevBtn.disabled = false;
+      nextBtn.innerText = "Create Course";
+    }
   };
 
   if (session.cache.createCourseFields){ // Cached course creation data available?
@@ -141,7 +190,7 @@
       <div in:fade={{duration: 200}}>
         <h4 class="text-center text-2xl mb-5 italic">Test Info</h4>
         <label for="questions-count">Questions Per Test:</label>
-        <input type="number" id="questions-count" name="questions-count" bind:value={fields.questionsPerTest}>
+        <input type="number" id="questions-count" name="questions-count" bind:value={fields.questionsCount}>
         <label for="duration">Seconds per question:</label>
         <input type="number" id="duration" name="duration" bind:value={fields.duration}>
         <label for="passing-score">Passing score:</label>
@@ -155,11 +204,13 @@
         <h4 class="text-center text-2xl mb-5 italic">Test Questions</h4>
         <label for="question">Question ({fields.questions.length + 1}):</label>
         <textarea class="leading-5 p-2" name="question" id="question" rows="4" placeholder="Question..." bind:value={fields.newQuestion.question} required></textarea>
-        <label>Options:</label>
-        <input type="text" placeholder="Option 1..." bind:value={fields.newQuestion.options[0]} required>
-        <input type="text" placeholder="Option 2..." bind:value={fields.newQuestion.options[1]} required>
-        <input type="text" placeholder="Option 3..." bind:value={fields.newQuestion.options[2]} required>
-        <input type="text" placeholder="Option 4..." bind:value={fields.newQuestion.options[3]} required>
+        <label for="options">Options:</label>
+        <div id="options">        
+          <input type="text" placeholder="Option 1..." bind:value={fields.newQuestion.options[0]} required>
+          <input type="text" placeholder="Option 2..." bind:value={fields.newQuestion.options[1]} required>
+          <input type="text" placeholder="Option 3..." bind:value={fields.newQuestion.options[2]} required>
+          <input type="text" placeholder="Option 4..." bind:value={fields.newQuestion.options[3]} required>
+        </div>
         <label for="answer">Correct Answer:</label>
         <div id="answer" class="w-full space-x-2 text-center mt-2">
           <input type="radio" id="answer-0" name="answer" on:click={() => fields.newQuestion.answer = 0} checked><label for="answer-0">Option A</label>

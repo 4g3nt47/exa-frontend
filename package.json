@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port 8000",
+    "tailwindcss": "tailwindcss -i src/input.tailwind.css -o src/style.css --watch",
     "build": "vite build",
     "preview": "vite preview"
   },

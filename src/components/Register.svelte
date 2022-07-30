@@ -40,7 +40,6 @@
       formData.append("file", document.getElementById("file").files[0]);
       const rsp = await fetch(`${session.api}/user/register`, {
         method: "POST",
-        header: [["Content-Type", "multipart/form-data"]],
         body: formData
       });
       const data = await rsp.json();
