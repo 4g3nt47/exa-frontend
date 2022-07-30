@@ -174,7 +174,7 @@
       // Restore the button
       nextBtn.disabled = false;
       prevBtn.disabled = false;
-      nextBtn.innerText = "Create Course";
+      nextBtn.innerText = "Next";
     }
   };
 
@@ -251,8 +251,8 @@
     <ErrorMsg {error}/>
     <div class="border-t border-black mt-5"></div>
     <div class="flex gap-2 mx-10 mt-5">
-      <Button type="secondary" on:click={gotoPrevious} bind:btn={prevBtn}>{stage === 1 ? 'Abort' : 'Previous'}</Button>
-      <Button on:click={gotoNext} bind:btn={nextBtn}>{stage === 3 ? 'Create Course' : 'Next'}</Button>
+      <Button type="secondary" on:click={gotoPrevious} bind:btn={prevBtn}>Previous</Button>
+      <Button on:click={gotoNext} bind:btn={nextBtn}>Next</Button>
     </div>
   </form>
 </div>
