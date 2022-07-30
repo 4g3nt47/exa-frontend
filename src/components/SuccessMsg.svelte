@@ -1,6 +1,7 @@
 <script>
+  // Reusable component for displaying 'success' messages.
   import {slide} from 'svelte/transition';
-  export let success = "";
+  export let success = ""; // The success message
 </script>
 
 {#if (success)}

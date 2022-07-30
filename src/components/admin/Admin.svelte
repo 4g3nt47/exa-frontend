@@ -1,20 +1,22 @@
 <script>
 
+  // The admin panel component.
+
   import {createEventDispatcher} from 'svelte';
   import CreateCourse from './CreateCourse.svelte';
   export let session = {};
   const dispatch = createEventDispatcher();
 
-  let page = "main";
+  let page = "main"; // Tracks navigation within the admin panel
   if (session.subPage)
     page = session.subPage;
 
+  // Used for local navigation
   const switchPage = (newPage) => {
     page = newPage;
     session.subPage = page;
     dispatch('updateSession', session);
   };
-  
 </script>
 
 {#if (page === 'main')}

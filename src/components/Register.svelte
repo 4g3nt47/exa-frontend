@@ -1,5 +1,7 @@
 <script>
 
+  // Our component for registering users.
+
   import {onMount, createEventDispatcher} from 'svelte';
   import SuccessMsg from './SuccessMsg.svelte';
   import ErrorMsg from './ErrorMsg.svelte';
@@ -11,6 +13,7 @@
   let error = "";
   let submitBtn;
 
+  // Will be hooked to the registration form.
   const fields = {
     username: "",
     password: "",
@@ -19,6 +22,7 @@
     gender: "male"
   };
 
+  // Performs user registration on form submit.
   const register = async () => {
 
     success = "";
@@ -34,32 +38,35 @@
     submitBtn.innerText = "Creating account...";
     submitBtn.disabled = true;
     try{
-      const formData = new FormData();
+      const formData = new FormData(); // Need this due to file upload.
       for (let param in fields)
         formData.append(param, fields[param]);
       formData.append("file", document.getElementById("file").files[0]);
+      // Make the request
       const rsp = await fetch(`${session.api}/user/register`, {
         method: "POST",
         body: formData
       });
       const data = await rsp.json();
-      if (rsp.status !== 200)
+      if (rsp.status !== 200) // Something went wrong...
         throw new Error(data.error);
+      // We are good :)
       document.getElementById("register").reset();
       success = data.success;
       setTimeout(() => dispatch('switchPage', 'Login'), 1000);
     }catch(err){
-      error = err.message;
+      error = err.message; // Display the error
     }finally{
+      // Restore our button
       submitBtn.disabled = false;
       submitBtn.innerText = "Register";
     }
   };
 
+  // Focuses on username field
   onMount(() => {
     document.getElementById('username').focus();
   });
-  
 </script>
 
 <h3>Register</h3>

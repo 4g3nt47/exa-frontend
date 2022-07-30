@@ -1,6 +1,7 @@
 <script>
+  //  Reusable component for displaying error messages.
   import {slide} from 'svelte/transition';
-  export let error = "";
+  export let error = ""; // The error to display.
 </script>
 
 {#if (error)}

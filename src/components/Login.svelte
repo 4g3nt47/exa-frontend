@@ -1,5 +1,7 @@
 <script>
   
+  // Our user login component
+
   import {onMount, createEventDispatcher} from 'svelte';
   import SuccessMsg from './SuccessMsg.svelte';
   import ErrorMsg from './ErrorMsg.svelte';
@@ -9,13 +11,16 @@
   export let session = {};
   let success = "";
   let error = "";
-  let fields = {username: "", password: ""};
+  let fields = {username: "", password: ""}; // Will be bound to login form params
   let submitBtn;
 
+  // Performs the login. Called on form submit.
   const login = async () => {
     
+    // Clear success and error messages.
     success = "";
     error = "";
+    // Disable the login button
     submitBtn.disabled = true;
     submitBtn.innerText = "Login in...";
     try{
@@ -28,24 +33,25 @@
         body: JSON.stringify(fields)
       });
       const data = await rsp.json();
-      if (rsp.status !== 200)
+      if (rsp.status !== 200) // Failed login
         throw new Error(data.error);
       session = {...session, loggedIn: true, ...data};
       dispatch('updateSession', session);
       success = "Authentication successful!";
       setTimeout(() => dispatch('switchPage', 'Home'), 1000);
     }catch(err){
-      error = err.message;
+      error = err.message; // Display the error message.
     }finally{
+      // Restore the login button.
       submitBtn.disabled = false;
       submitBtn.innerText = "Login";
     }
   };
 
+  // Focus on username field when component is mounted (Svelte hates it when I use `autofocus`)
   onMount(() => {
     document.getElementById('username').focus();
   });
-  
 </script>
 
 <h3>Login</h3>

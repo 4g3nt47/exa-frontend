@@ -1,3 +1,7 @@
+<!-- 
+  A simple loading animation for pages that take time to load.
+-->
+
 <div class="w-full p-1">
   <div class="loader-box mx-auto">
     <div class="loader-item"></div>

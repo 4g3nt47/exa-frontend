@@ -1,22 +1,25 @@
 <script>
 
+  // Profile component for logged in users.
+
   import {onMount} from 'svelte';
   import Loader from './Loader.svelte';
   import SuccessMsg from './SuccessMsg.svelte';
   import ErrorMsg from './ErrorMsg.svelte';
 
   export let session = {};
-  let profile = null;
+  let profile = null; // Loaded profile data will be stored here
   let error = "";
 
+  // Load user data when component is mounted. Till then a load animation is displayed.
   onMount(async () => {
-    
+
     try{
       const rsp = await fetch(`${session.api}/user/profile`, {
         credentials: 'include'
       });
       const data = await rsp.json();
-      if (rsp.status !== 200)
+      if (rsp.status !== 200) // Oooops!
         throw new Error(data.error);
       profile = data;
     }catch(err){

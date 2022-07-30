@@ -1,6 +1,7 @@
 <script>
+  
+  // The primary component.
 
-  // Our imports.
   import {scale, slide, fade} from 'svelte/transition';
   import Header from './components/Header.svelte';
   import Footer from './components/Footer.svelte';
@@ -23,7 +24,7 @@
     };
   };
 
-  // For saving the session to local storage.
+  // Saves session data to local storage.
   const saveSession = () => {
 
     if (Storage){
@@ -33,7 +34,7 @@
     return false;
   };
 
-  // For loading session from local storage.
+  // Loads session from local storage, or create a new one if none found.
   const loadSession = () => {
     
     let newSession = createSession();
@@ -58,13 +59,13 @@
     let page = e.detail;
     if (page === "Logout")
       page = "Login";
-    if (page === "Login" || page === "Register")
+    if (page === "Login" || page === "Register") // Pages that require session reset.
       session = createSession(); // Destroy the current session
     session.page = page;
-    if (session.loggedIn === true){
+    if (session.loggedIn === true){ // Change nav for logged in users.
       session.pages[1] = "Profile";
       session.pages[2] = "Logout";
-      if (session.admin){
+      if (session.admin){ // Display administrative navs
         session.pages[3] = "Admin";
         session.pages[4] = "About";
       }

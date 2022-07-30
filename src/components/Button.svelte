@@ -1,7 +1,8 @@
 <script>
-  export let type = "primary";
-  export let btn = null;
-  export let btnType = "button";
+  // Reusable button components.
+  export let type = "primary";    // Button type (primary/secondary/danger).
+  export let btn = null;          // Used by parent components to access the button element. 
+  export let btnType = "button";  // Value `type` attribute of the button
 </script>
 
 {#if (type === "primary")}

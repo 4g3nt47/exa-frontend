@@ -1,5 +1,7 @@
 <script>
 
+  // This component handles interactive course creation. For admins only.
+
   import {createEventDispatcher} from 'svelte';
   import {scale, fade, slide} from 'svelte/transition';
   import Button from '../Button.svelte';
@@ -14,11 +16,13 @@
   let nextBtn, prevBtn;
   let avatar = null;
 
+  // Reset success and error messages
   const clearMessages = () => {
     success = "";
     error = "";
   };
 
+  // Returns a question template
   const createQuestion = () => {
     return {
       question: "",
@@ -27,6 +31,7 @@
     };
   };
 
+  // For binding our form
   let fields = {
     name: "",
     title: "",
@@ -39,17 +44,20 @@
     questions: []
   };
 
+  // Caches the course data, and update the main session. Saves us from data loss on page reload.
   const updateCache = () => {
     session.cache.createCourseFields = fields;
     session.cache.createCourseFields.stage = stage;
     dispatch('updateSession', session);
   };
 
+  // Return to main admin menu.
   const abort = () => {
     session.cache.createCourseFields = undefined;
     dispatch('abort');
   };
 
+  // Goes back to previous form. Aborts course creation if on the first form (after confirmation)
   const gotoPrevious = () => {
 
     clearMessages();
@@ -61,7 +69,8 @@
       updateCache();
     }
   }
-
+  
+  // Go to the next form. Submit new course data if we are on the final form already.
   const gotoNext = () => {
 
     clearMessages();
@@ -83,6 +92,7 @@
     updateCache();
   }
 
+  // Queue a question, and create a new one.
   const addQuestion = () => {
     
     clearMessages();
@@ -101,10 +111,12 @@
     document.getElementById('question').focus();
   };
 
+  // Makes the course creation request.
   const createCourse = async () => {
     
     clearMessages();
     try{
+      // Do some client-side validation
       if (!fields.name)
         throw new Error("Course name not defined!");
       if (!fields.title)
@@ -122,13 +134,16 @@
       if (!avatar)
         throw new Error("Course avatar is required, please go back and choose one.");      
     }catch(err){
+      // Report error and halt.
       error = err.message;
       return;
     }
+    // Disable the create button
     nextBtn.innerText = "Creating...";
     nextBtn.disabled = true;
     prevBtn.disabled = true;
     try{
+      // Build the request.
       const formData = new FormData();
       formData.append("releaseDate", new Date(fields.releaseDate).getTime());
       formData.append("duration", fields.duration * 1000);
@@ -141,29 +156,36 @@
         }
       }
       formData.append('file', avatar);
+      // Send it!
       const rsp = await fetch(`${session.api}/course/create`, {
         method: 'POST',
         credentials: 'include',
         body: formData
       });
       const data = await rsp.json();
-      if (rsp.status !== 200)
+      if (rsp.status !== 200) // We messed up :(
         throw new Error(data.error);
+      // All is well!
       success = data.success;
-      setTimeout(abort, 3000);
+      setTimeout(abort, 3000); // Go back to main after a brief delay
     }catch(err){
-      error = err.message;
+      error = err.message; // Tells us what we did wrong
     }finally{
+      // Restore the button
       nextBtn.disabled = false;
       prevBtn.disabled = false;
       nextBtn.innerText = "Create Course";
     }
   };
 
-  if (session.cache.createCourseFields){ // Cached course creation data available?
+  // Start by restoring course cache if available
+  if (session.cache.createCourseFields){
+    // Restore form data and stage. Course avatar will have to be re-selected since we can't
+    // really cache a file selection.
     fields = session.cache.createCourseFields;
     stage = session.cache.createCourseFields.stage;
   }else{
+    // No cache, create one.
     updateCache();
   }
 

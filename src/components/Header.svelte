@@ -1,18 +1,17 @@
 <script>
 
+  // Our header component.
+
   import {createEventDispatcher} from 'svelte';
   const dispatch = createEventDispatcher();
 
   export let session = {};
 
+  // Creates the `switchPage` event handled by the parent when a user clicks on a nav link
   const switchPage = (newPage) => {
-    if (newPage != session.page){
+    if (newPage != session.page) // Switch page only if we aren't clicking on the current page's link
       dispatch("switchPage", newPage);
-    }
   };
-
-  const curr = false;
-
 </script>
 
 <header class="flex justify-between py-5 px-5 mb-10 bg-gray-800 text-white">
