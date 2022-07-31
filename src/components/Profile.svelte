@@ -43,10 +43,6 @@
             <td>{profile.name}</td>
           </tr>
           <tr>
-            <th>Gender:</th>
-            <td>{profile.gender}</td>
-          </tr>
-          <tr>
             <th>Joined on:</th>
             <td>{new Date(profile.creationDate).toLocaleString()}</td>
           </tr>

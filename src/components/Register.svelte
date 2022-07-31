@@ -18,8 +18,7 @@
     username: "",
     password: "",
     confPassword: "",
-    name: "",
-    gender: "male"
+    name: ""
   };
 
   // Performs user registration on form submit.
@@ -79,11 +78,6 @@
   <input type="password" id="conf-password" placeholder="Confirm password..." bind:value={fields.confPassword} required>
   <label for="name">Full Name:</label>
   <input type="text" id="name" placeholder="Your full name..." bind:value={fields.name} required>
-  <label for="gender">Gender:</label>
-  <div id="gender" class="w-full pl-10 mb-2 space-x-1">
-    <input type="radio" id="male" name="gender" value="Male" on:click={() => fields.gender = "male"} checked><label for="male">Male</label>
-    <input type="radio" id="female" name="gender" value="Female" on:click={() => fields.gender = "female"}><label for="female">Female</label>
-  </div>
   <label for="file">Profile picture:</label>
   <input class="mt-2 w-full" type="file" name="file" id="file" required>
   <div class="mt-5">

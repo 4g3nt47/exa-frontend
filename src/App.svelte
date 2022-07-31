@@ -9,6 +9,7 @@
   import Login from './components/Login.svelte';
   import Profile from './components/Profile.svelte';
   import Admin from './components/admin/Admin.svelte';
+  import CourseList from './components/course/CourseList.svelte';
   
   // This will be used for tracking user session locally.
   const createSession = () => {
@@ -17,7 +18,7 @@
       username: "",
       loggedIn: false,
       admin: false,
-      pages: ["Home", "Login", "Register", "About"],
+      pages: ["Login", "Register", "About"],
       page: "Login",
       subPage: "",
       cache: {}
@@ -63,11 +64,15 @@
       session = createSession(); // Destroy the current session
     session.page = page;
     if (session.loggedIn === true){ // Change nav for logged in users.
+      if (session.pages[0] !== "Home")
+        session.pages = ["Home", ...session.pages];
       session.pages[1] = "Profile";
-      session.pages[2] = "Logout";
+      session.pages[2] = "About";
+      session.pages[3] = "Logout";
       if (session.admin){ // Display administrative navs
-        session.pages[3] = "Admin";
-        session.pages[4] = "About";
+        session.pages[2] = "Admin";
+        session.pages[3] = "About";
+        session.pages[4] = "Logout";
       }
       session.pages = session.pages;
     }
@@ -81,7 +86,7 @@
   <div class="main-content px-5">
     {#if (session.page === "Home")}
       <div in:fade={{duration: 200}}>        
-        <h3>Courses</h3>
+        <CourseList {session} on:switchPage={switchPage}/>
       </div>
     {:else if (session.page === "Register")}
       <div in:fade={{duration: 200}}>
