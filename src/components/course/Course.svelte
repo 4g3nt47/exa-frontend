@@ -2,12 +2,14 @@
 
   // This component displays course data when clicked, and handles the test.
   
+  import {onMount, onDestroy} from 'svelte';
   import {scale, fade, slide} from 'svelte/transition';
   import {createEventDispatcher} from 'svelte';
   import Button from '../Button.svelte';
   import SuccessMsg from '../SuccessMsg.svelte';
   import ErrorMsg from '../ErrorMsg.svelte';
   import CourseTest from './CourseTest.svelte';
+  import {initCountdown, abortCountdown} from '../../lib/countdown.js';
 
   export let session = {};
   export let course = {};
@@ -18,6 +20,8 @@
   let password = "";
   let startBtn, backBtn;
   let completed = false;
+  let released = false;
+  let releaseTime = "00:00:00:00";
 
   const clearMessages = () => {
     success = "";
@@ -34,7 +38,7 @@
 
     clearMessages();
     // Change button text and disable it.
-    startBtn.innerText = "Starting...";
+    startBtn.innerText = (course.activeTest ? "Resuming..." : "Starting...");
     startBtn.disabled = true;
     try{
       // Start the test.
@@ -63,16 +67,44 @@
   };
 
   const testFinished = () => {
+
     completed = true;
+    course.activeTest = false;
     startedCourseData = null;
     success = "Congratulations!";
   };
+
+  // Do some initialization.
+  onMount(() => {
+    // Init our course release countdown if needed.
+    if (Date.now() < course.releaseDate){ // Course not yet released.
+      startBtn.disabled = true;
+      initCountdown({
+        onUpdate: (timeLeft) => {
+          releaseTime = timeLeft;
+        },
+        onFinish: () => {
+          released = true;
+          startBtn.disabled = false;
+        },
+        target: course.releaseDate,
+        strOutput: true
+      })();
+    }else{
+      released = true;
+    }
+  });
+
+  // Cleanup
+  onDestroy(() => {
+    abortCountdown(); // Stop course release countdown.
+  });
 
 </script>
 
 {#if (!startedCourseData)}
   <div class="mx-40">
-    <div class="bg-gray-200 mx-56 rounded-lg shadow-lg shadow-gray-600 pb-5">
+    <div class="bg-gray-300 mx-56 rounded-lg shadow-lg shadow-gray-600 pb-5">
       <img class="w-full h-56 rounded-t-lg" src={`${session.api}/${course.avatar}`} alt="">
       <table class="w-full my-2 border-t-2 border-black">
         <tr>
@@ -95,8 +127,14 @@
           <th>Time allowed:</th>
           <td>{(course.questions * course.duration) / 60000} minutes</td>
         </tr>
+        {#if (!released)}
+          <tr>
+            <th>Time to release:</th>
+            <td>{releaseTime}</td>
+          </tr>
+        {/if}
       </table>
-      {#if (course.password)}
+      {#if (course.password && course.activeTest !== true)}
         <div class="w-1/2 mx-auto text-right my-5">
           <input class="block w-full my-1 mb-3 leading-7 border-2 border-black rounded-md px-1" type="password" placeholder="Password..." bind:value={password}>
         </div>
@@ -104,7 +142,7 @@
       <div class="flex gap-2 mx-16">
         <Button type="secondary" bind:btn={backBtn} on:click={back}>Back</Button>
         {#if (!completed)}
-          <Button type="primary" bind:btn={startBtn} on:click={startTest}>Start</Button>
+          <Button type="primary" bind:btn={startBtn} on:click={startTest}>{(course.activeTest ? 'Resume' : 'Start')}</Button>
         {/if}
       </div>
       <div class="mx-5">

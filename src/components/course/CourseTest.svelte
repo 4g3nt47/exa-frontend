@@ -144,16 +144,16 @@
 <h5 class="text-xl text-center -mt-5 mb-10">{courseInfo.title}</h5>
 <div class="flex space-x-10 mx-10 items-start">
   <!-- Questions nav menu -->
-  <div class="w-1/3 grid grid-cols-5 gap-2 bg-gray-200 shadow-md shadow-gray-600 p-2">
+  <div class="w-1/4 grid grid-cols-5 gap-2 bg-gray-300 shadow-md shadow-gray-600 p-2">
     <h4 class="col-span-5 text-2xl text-center pb-5">Questions</h4>
     {#each course.questions as question, index}
-      <div id={question.id} on:click={() => goto(index)} class={`text-center text-xl p-2 cursor-pointer bg-gray-400 rounded-md hover:bg-blue-600 transition-colors duration-100 ${questionIndex === index ? 'bg-blue-600' : (question.answer !== -1 && questionIndex !== index ? 'bg-green-600' : '')}`}>
+      <div id={question.id} on:click={() => goto(index)} class={`text-center text-xl p-1 cursor-pointer bg-gray-400 rounded-md hover:bg-blue-600 transition-colors duration-100 ${questionIndex === index ? 'bg-blue-600' : (question.answer !== -1 && questionIndex !== index ? 'bg-green-600' : '')}`}>
         {index + 1}
       </div>
     {/each}
   </div>
   <!-- Question div -->
-  <div class="w-3/5 p-5 bg-gray-200 shadow-md shadow-gray-600">
+  <div class="w-3/5 p-5 bg-gray-300 shadow-md shadow-gray-600">
     <!-- The question itself -->
     <pre class="text-xl whitespace-pre-wrap break-words">{question.question}</pre>
     <!-- The options -->

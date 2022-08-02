@@ -192,7 +192,7 @@
 </script>
 
 <h3>New Course</h3>
-<div class="w-1/2 mx-auto p-5 bg-gray-200 shadow-md shadow-gray-600">
+<div class="w-1/2 mx-auto p-5 bg-gray-300 shadow-md shadow-gray-600">
   <form in:fade={{duration: 300}}>
     {#if (stage === 1)}
       <div in:fade={{duration: 200}}>
