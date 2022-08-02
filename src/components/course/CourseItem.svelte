@@ -9,8 +9,8 @@
 
 </script>
 
-<div class="flex gap-2 p-2 rounded-lg shadow-md shadow-gray-600 cursor-pointer opacity-90 hover:opacity-100 duration-200" on:click={() => dispatch('click', course)}>
-  <img class="w-2/5 h-full rounded-lg" src={`${session.api}/${course.avatar}`} alt={course.name}>
+<div class="flex gap-2 bg-gray-200 p-2 rounded-lg shadow-md shadow-gray-600 cursor-pointer opacity-90 hover:opacity-100 duration-200" on:click={() => dispatch('click', course)}>
+  <img class="w-2/5 h-32 rounded-lg" src={`${session.api}/${course.avatar}`} alt={course.name}>
   <div>
     <p class="font-bold">{course.name}</p>
     <p>{course.title}</p>

@@ -192,8 +192,8 @@
 </script>
 
 <h3>New Course</h3>
-<div class="w-1/2 mx-auto p-5 border-black rounded-2xl shadow-lg shadow-gray-600">
-  <form in:fade={{duration: 300}} class="new-course-form">
+<div class="w-1/2 mx-auto p-5 bg-gray-200 shadow-md shadow-gray-600">
+  <form in:fade={{duration: 300}}>
     {#if (stage === 1)}
       <div in:fade={{duration: 200}}>
         <h4 class="text-center text-2xl mb-5 italic">Course Info</h4>
@@ -225,13 +225,13 @@
       <div in:fade={{duration: 200}}>
         <h4 class="text-center text-2xl mb-5 italic">Test Questions</h4>
         <label for="question">Question ({fields.questions.length + 1}):</label>
-        <textarea class="leading-5 p-2" name="question" id="question" rows="4" placeholder="Question..." bind:value={fields.newQuestion.question} required></textarea>
+        <textarea class="leading-5 p-2" name="question" id="question" rows="4" spellcheck="false" placeholder="Question..." bind:value={fields.newQuestion.question} required></textarea>
         <label for="options">Options:</label>
         <div id="options">        
-          <input type="text" placeholder="Option 1..." bind:value={fields.newQuestion.options[0]} required>
-          <input type="text" placeholder="Option 2..." bind:value={fields.newQuestion.options[1]} required>
-          <input type="text" placeholder="Option 3..." bind:value={fields.newQuestion.options[2]} required>
-          <input type="text" placeholder="Option 4..." bind:value={fields.newQuestion.options[3]} required>
+          <input type="text" spellcheck="false" placeholder="Option 1..." bind:value={fields.newQuestion.options[0]} required>
+          <input type="text" spellcheck="false" placeholder="Option 2..." bind:value={fields.newQuestion.options[1]} required>
+          <input type="text" spellcheck="false" placeholder="Option 3..." bind:value={fields.newQuestion.options[2]} required>
+          <input type="text" spellcheck="false" placeholder="Option 4..." bind:value={fields.newQuestion.options[3]} required>
         </div>
         <label for="answer">Correct Answer:</label>
         <div id="answer" class="w-full space-x-2 text-center mt-2">

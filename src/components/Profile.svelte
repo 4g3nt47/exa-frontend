@@ -34,7 +34,7 @@
   {#if (profile == null && error.length === 0)}
     <Loader>Loading profile...</Loader>
   {:else if (profile !== null)}
-    <div class="info-card mx-auto flex rounded-2xl p-5 shadow-lg shadow-gray-600 items-center">
+    <div class="info-card mx-auto bg-gray-200 flex rounded-2xl p-5 shadow-lg shadow-gray-600 items-center">
       <img class="profile-avatar border-gray-700" src={session.api + "/" +  profile.avatar} alt="My avatar">
       <div class="text-left ml-2 w-full">
         <table>
