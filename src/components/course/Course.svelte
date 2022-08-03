@@ -1,10 +1,8 @@
 <script>
 
-  // This component displays course data when clicked, and handles the test.
+  // This component displays course data when clicked, and handles the starting of tests.
   
-  import {onMount, onDestroy} from 'svelte';
-  import {scale, fade, slide} from 'svelte/transition';
-  import {createEventDispatcher} from 'svelte';
+  import {onMount, onDestroy, createEventDispatcher} from 'svelte';
   import Button from '../Button.svelte';
   import SuccessMsg from '../SuccessMsg.svelte';
   import ErrorMsg from '../ErrorMsg.svelte';
@@ -71,7 +69,7 @@
     completed = true;
     course.activeTest = false;
     startedCourseData = null;
-    success = "Congratulations!";
+    success = "Congratulations! Your result should be in your profile.";
   };
 
   // Do some initialization.
@@ -124,8 +122,12 @@
           <td>{course.questions}</td>
         </tr>
         <tr>
+          <th>Passing score:</th>
+          <td>{course.passingScore}%</td>
+        </tr>
+        <tr>
           <th>Time allowed:</th>
-          <td>{(course.questions * course.duration) / 60000} minutes</td>
+          <td>{((course.questions * course.duration) / 60000).toFixed(2)} minutes</td>
         </tr>
         {#if (!released)}
           <tr>

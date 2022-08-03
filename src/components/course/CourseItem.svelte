@@ -15,6 +15,6 @@
     <p class="font-bold">{course.name}</p>
     <p>{course.title}</p>
     <p>{new Date(course.creationDate).toLocaleDateString()}</p>
-    <p><span class="font-bold">{course.questions}</span> questions in <span class="font-bold">{(course.questions * course.duration) / 60000}</span> minutes</p>
+    <p><span class="font-bold">{course.questions}</span> questions in <span class="font-bold">{((course.questions * course.duration) / 60000).toFixed(2)}</span> minutes</p>
   </div>
 </div>

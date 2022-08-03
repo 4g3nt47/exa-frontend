@@ -40,6 +40,9 @@ const update = () => {
 // For aborting the countdown.
 // Used internally when the target time is reached, or externally when countdown is no longer needed.
 export const abortCountdown = () => {
-  if (timer)
+  
+  if (timer){
     clearInterval(timer);
+    timer = null;
+  }
 };

@@ -2,11 +2,12 @@
 
   // This component handles a course test started by a user.
 
-  import {createEventDispatcher} from 'svelte';
+  import {onMount, onDestroy, createEventDispatcher} from 'svelte';
   import {fade} from 'svelte/transition';
   import Button from '../Button.svelte';
   import SuccessMsg from '../SuccessMsg.svelte';
   import ErrorMsg from '../ErrorMsg.svelte';
+  import {initCountdown, abortCountdown} from '../../lib/countdown.js';
 
   export let session = {};
   export let courseInfo = {};
@@ -17,7 +18,9 @@
   let question = null; // Stores current question.
   let questionIndex = 0; // Holds index of the current question.
   let nextBtn, backBtn;
+  let timeLeft = "00:00:00:00"; // Course duration countdown
   let freezeNavs = false; // For temporarily disabling navigation during test.
+  let submitting = false; // To prevent duplicate final submissions that may arise in few cases.
   const optionLabels = ['A.', 'B.', 'C.', 'D.'];
 
   // Clear success and error message
@@ -95,9 +98,13 @@
 
   // Ends the test and re-submit all answers.
   const finishTest = async () => {
-
+    
+    if (submitting)
+      return;
+    submitting = true;
     // Clear error and free navigation
     clearMessages();
+    abortCountdown();
     freezeNavs = true;
     nextBtn.innerText = "Submitting..."
     try{
@@ -135,6 +142,25 @@
     }
   };
 
+  onMount(() => {
+    // Start the countdown.
+    initCountdown({
+      onUpdate: (time) => {
+        timeLeft = time;
+      },
+      onFinish: () => {
+        finishTest();
+      },
+      target: course.finishTime,
+      strOutput: true
+    })();
+  });
+
+  // Cleanup
+  onDestroy(() => {
+    abortCountdown();
+  });
+
   goto(0); // Start from the beginning.
 
 </script>
@@ -146,6 +172,7 @@
   <!-- Questions nav menu -->
   <div class="w-1/4 grid grid-cols-5 gap-2 bg-gray-300 shadow-md shadow-gray-600 p-2">
     <h4 class="col-span-5 text-2xl text-center pb-5">Questions</h4>
+    <p class="col-span-5 font-bold text-center font-mono">{timeLeft}</p>
     {#each course.questions as question, index}
       <div id={question.id} on:click={() => goto(index)} class={`text-center text-xl p-1 cursor-pointer bg-gray-400 rounded-md hover:bg-blue-600 transition-colors duration-100 ${questionIndex === index ? 'bg-blue-600' : (question.answer !== -1 && questionIndex !== index ? 'bg-green-600' : '')}`}>
         {index + 1}
