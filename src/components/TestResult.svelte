@@ -5,14 +5,13 @@
   import {onMount} from 'svelte';
   import {Chart, registerables} from 'chart.js';
 
-
   export let result = {};
 
   onMount(() => {
 
     // Setup Chart.js and create a little pie chart for questions passed and failed.
     Chart.register(...registerables);
-    new Chart('stat-chart', {
+    new Chart(result.courseID, {
       type: 'pie',
       options: {
         responsive: true,
@@ -41,7 +40,7 @@
 
 <div class="w-full flex items-center border-t border-dashed border-t-black py-2">
   <div class="w-36">
-    <canvas id="stat-chart" style="max-height: 100px; max-width: 100px;">
+    <canvas id={result.courseID} style="max-height: 100px; max-width: 100px;">
     </canvas>    
   </div>
   <div class="w-full">

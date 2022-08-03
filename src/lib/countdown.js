@@ -2,47 +2,49 @@
  * A simple module for creating timer countdowns.
  */
 
-let timer = null;
-let onUpdate, onFinish;
-let delay, target, strOutput;
+class Countdown{
 
-// Initializes the countdown, and returns the callback function used to start the countdown.
-export const initCountdown = (config) => {
+  // Initializes the countdown
 
-  onUpdate = config.onUpdate;
-  onFinish = config.onFinish;
-  delay = config.delay || 1000;
-  target = config.target || 0;
-  strOutput = config.strOutput || false;
-  return startCountdown;
-};
+  constructor(config){
 
-// Starts the countdown.
-const startCountdown = (config) => {
-  timer = setInterval(update, delay);
-};
-
-// Called after every 'delay' millis have elapsed.
-// Gives user a callback using onUpdate() if there is more time left, else calls onFinish().
-const update = () => {
-
-  let diff = target - Date.now();
-  if (diff <= 0){
-    abortCountdown();
-    return onFinish();
+    this.timer = null;
+    this.onUpdate = config.onUpdate;
+    this.onFinish = config.onFinish;
+    this.delay = config.delay || 1000;
+    this.target = config.target || 0;
+    this.strOutput = config.strOutput || false;
   }
-  let fmt;
-  if (diff > 0)
-    fmt = parseInt(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0') + ":" + parseInt((diff / (1000 * 60 * 60)) % 60).toString().padStart(2, '0') + ":" + parseInt((diff / (1000 * 60)) % 60).toString().padStart(2, '0') + ":" + parseInt((diff / 1000) % 60).toString().padStart(2, '0');
-  onUpdate(strOutput ? fmt : diff);
-};
 
-// For aborting the countdown.
-// Used internally when the target time is reached, or externally when countdown is no longer needed.
-export const abortCountdown = () => {
-  
-  if (timer){
-    clearInterval(timer);
-    timer = null;
+  // Start the countdown
+  start(){
+
+    if (this.timer === null)
+      this.timer = setInterval(this.update.bind(this), this.delay);
   }
-};
+
+  // Update the countdown.
+  update(){
+
+    let diff = this.target - Date.now();
+    if (diff <= 0){
+      this.stop();
+      return this.onFinish();
+    }
+    let fmt = "00:00:00:00";
+    if (diff > 0)
+      fmt = parseInt(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0') + ":" + parseInt((diff / (1000 * 60 * 60)) % 60).toString().padStart(2, '0') + ":" + parseInt((diff / (1000 * 60)) % 60).toString().padStart(2, '0') + ":" + parseInt((diff / 1000) % 60).toString().padStart(2, '0');
+    this.onUpdate(this.strOutput ? fmt : diff);
+  }
+
+  // Stop the countdown
+  stop(){
+
+    if (this.timer){
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+  }
+}
+
+export default Countdown;

@@ -7,7 +7,7 @@
   import SuccessMsg from '../SuccessMsg.svelte';
   import ErrorMsg from '../ErrorMsg.svelte';
   import CourseTest from './CourseTest.svelte';
-  import {initCountdown, abortCountdown} from '../../lib/countdown.js';
+  import Countdown from '../../lib/countdown.js';
 
   export let session = {};
   export let course = {};
@@ -17,9 +17,8 @@
   let startedCourseData = null;
   let password = "";
   let startBtn, backBtn;
-  let completed = false;
-  let released = false;
-  let releaseTime = "00:00:00:00";
+  let completed = false, released = false;
+  let releaseTime = "", countdown = null;
 
   const clearMessages = () => {
     success = "";
@@ -77,7 +76,7 @@
     // Init our course release countdown if needed.
     if (Date.now() < course.releaseDate){ // Course not yet released.
       startBtn.disabled = true;
-      initCountdown({
+      countdown = new Countdown({
         onUpdate: (timeLeft) => {
           releaseTime = timeLeft;
         },
@@ -87,7 +86,8 @@
         },
         target: course.releaseDate,
         strOutput: true
-      })();
+      });
+      countdown.start();
     }else{
       released = true;
     }
@@ -95,7 +95,8 @@
 
   // Cleanup
   onDestroy(() => {
-    abortCountdown(); // Stop course release countdown.
+    if (countdown)
+      countdown.stop(); // Stop course release countdown.
   });
 
 </script>
@@ -162,6 +163,7 @@
   tr{
     border-bottom: 2px solid black;
   }
+  
   th{
     width: 35%;
     text-align: left;

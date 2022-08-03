@@ -3,7 +3,9 @@
   // The admin panel component.
 
   import {createEventDispatcher} from 'svelte';
+  import Button from '../Button.svelte';
   import CreateCourse from './CreateCourse.svelte';
+  import ManageCourses from './ManageCourses.svelte';
   export let session = {};
   const dispatch = createEventDispatcher();
 
@@ -25,11 +27,11 @@
     <div class="admin-menu-card create-menu text-white" on:click={() => switchPage('newCourse')}>
       Create Course
     </div>
-    <div class="admin-menu-card import-menu text-white" on:click={() => switchPage('importCourse')}>
-      Import Course
+    <div class="admin-menu-card result-menu text-white" on:click={() => switchPage('manageCourse')}>
+      Manage Courses
     </div>
-    <div class="admin-menu-card result-menu text-white" on:click={() => switchPage('newCourse')}>
-      Export Result
+    <div class="admin-menu-card import-menu text-white" on:click={() => switchPage('manageUsers')}>
+      Manage Users
     </div>
     <div class="admin-menu-card event-menu text-white" on:click={() => switchPage('eventLogs')}>
       Event Logs
@@ -37,12 +39,19 @@
   </div>
 {:else if (page === 'newCourse')}
   <CreateCourse {session} on:updateSession on:abort={() => switchPage('main')}/>
-{:else if (page === 'importCourse')}
-  <h3>Import Course</h3>
-{:else if (page === 'exportResult')}
-  <h3>Export Result</h3>
+{:else if (page === 'manageCourse')}
+  <ManageCourses {session}/>
+{:else if (page === 'manageUsers')}
+  <h3>Users</h3>
 {:else if (page === 'eventLogs')}
   <h3>Event Logs</h3>
+{/if}
+{#if (page !== 'main')}
+  <div class="w-full mt-10 border-t border-t-black">
+    <div class="w-1/3 mx-auto mt-3">
+      <Button type="secondary" on:click={() => switchPage('main')}>Back</Button>
+    </div>
+  </div>
 {/if}
 
 <style>

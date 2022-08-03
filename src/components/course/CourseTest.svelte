@@ -7,7 +7,7 @@
   import Button from '../Button.svelte';
   import SuccessMsg from '../SuccessMsg.svelte';
   import ErrorMsg from '../ErrorMsg.svelte';
-  import {initCountdown, abortCountdown} from '../../lib/countdown.js';
+  import Countdown from '../../lib/countdown.js';
 
   export let session = {};
   export let courseInfo = {};
@@ -18,9 +18,10 @@
   let question = null; // Stores current question.
   let questionIndex = 0; // Holds index of the current question.
   let nextBtn, backBtn;
-  let timeLeft = "00:00:00:00"; // Course duration countdown
+  let timeLeft = ""; // Course duration countdown
   let freezeNavs = false; // For temporarily disabling navigation during test.
   let submitting = false; // To prevent duplicate final submissions that may arise in few cases.
+  let countdown = null;
   const optionLabels = ['A.', 'B.', 'C.', 'D.'];
 
   // Clear success and error message
@@ -66,7 +67,7 @@
   // Set/update the answer for a question.
   const setAnswer = async (index) => {
     
-    if (freezeNavs)
+    if (freezeNavs || submitting)
       return;
     clearMessages();
     try{
@@ -104,7 +105,7 @@
     submitting = true;
     // Clear error and free navigation
     clearMessages();
-    abortCountdown();
+    countdown.stop();
     freezeNavs = true;
     nextBtn.innerText = "Submitting..."
     try{
@@ -135,7 +136,7 @@
       success = "Answers submitted successfully!";
       setTimeout(() => {
         dispatch("finish");
-      }, 5000);
+      }, 2000);
     }catch(err){
       error = err.message;
       console.log(err);
@@ -144,7 +145,7 @@
 
   onMount(() => {
     // Start the countdown.
-    initCountdown({
+    countdown = new Countdown({
       onUpdate: (time) => {
         timeLeft = time;
       },
@@ -153,12 +154,13 @@
       },
       target: course.finishTime,
       strOutput: true
-    })();
+    });
+    countdown.start();
   });
 
   // Cleanup
   onDestroy(() => {
-    abortCountdown();
+    countdown.stop();
   });
 
   goto(0); // Start from the beginning.

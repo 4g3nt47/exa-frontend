@@ -1,6 +1,13 @@
 <script>
-  
-  // This component lists available courses in the homepage.
+
+  /**
+   *   Displays the list of courses available.
+   * Props:
+   *   session         - The session object.
+   *   handleSelection - Dictates whether this component should display the course clicked by
+   *                     user using the 'Course' component. If false, 'selectCourse' event is emitted
+   *                     with the selected course as detail.
+   */  
 
   import {onMount, createEventDispatcher} from 'svelte';
   import {scale, slide, fade} from 'svelte/transition';
@@ -9,12 +16,15 @@
   import CourseItem from './CourseItem.svelte';
   import Course from './Course.svelte';
 
+  const dispatch = createEventDispatcher();
   export let session = {};
+  export let handleSelection = true;
   let courses = null; // Loaded courses will be stored here
   let selectedCourse = null; // Course selected by the user
   let error = "";
 
   onMount(async () => {
+
     // Load courses
     try{
       const rsp = await fetch(`${session.api}/course`, {
@@ -30,8 +40,12 @@
   });
 
   const select = (e) => {
-    selectedCourse = e.detail;
+    if (handleSelection)
+      selectedCourse = e.detail;
+    else
+      dispatch('selectCourse', e.detail);
   };
+
 </script>
 
 {#if (selectedCourse === null)}
