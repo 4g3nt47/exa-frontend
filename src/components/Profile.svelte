@@ -70,9 +70,11 @@
         </div>        
       </div>
       {#if (profile.results.length > 0)}
-        <h5 class="text-center my-10  text-xl">Results</h5>
+        <h5 class="text-center my-10 text-xl">Results</h5>
         {#each profile.results as result}
-          <TestResult {result}/>
+          <div class="w-full border-t border-dashed border-t-black">
+            <TestResult {result}/>
+          </div>
         {/each}
       {/if}
     </div>

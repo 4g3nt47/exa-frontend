@@ -6,6 +6,7 @@
   import {Chart, registerables} from 'chart.js';
 
   export let result = {};
+  export let hideCourseInfo = false; // Used to hide some info about the course.
 
   onMount(() => {
 
@@ -38,21 +39,23 @@
 
 </script>
 
-<div class="w-full flex items-center border-t border-dashed border-t-black py-2">
+<div class="w-full flex items-center py-2">
   <div class="w-36">
     <canvas id={result.courseID} style="max-height: 100px; max-width: 100px;">
     </canvas>    
   </div>
   <div class="w-full">
     <table>
-      <tr>
-        <th>Name:</th>
-        <td>{result.courseName}</td>
-      </tr>
-      <tr>
-        <th>Title:</th>
-        <td>{result.courseTitle}</td>
-      </tr>
+      {#if (!hideCourseInfo)}
+        <tr>
+          <th>Name:</th>
+          <td>{result.courseName}</td>
+        </tr>
+        <tr>
+          <th>Title:</th>
+          <td>{result.courseTitle}</td>
+        </tr>
+      {/if}
       <tr>
         <th>Date:</th>
         <td>{new Date(result.date).toLocaleString()}</td>
