@@ -21,7 +21,7 @@
   </div>
   <nav class="self-center">
     {#each session.pages as p}
-      <a class={"text-lg mx-2 " + (session.page === p ? "text-green-400" : "hover:text-green-400 duration-300")} href="#" on:click={() => switchPage(p)}>{p}</a>
+      <a class={"text-lg mx-2 " + (session.page === p ? "text-green-400" : "hover:text-green-400 duration-300")} href="/" on:click|preventDefault={() => switchPage(p)}>{p}</a>
     {/each}
   </nav>
 </header>

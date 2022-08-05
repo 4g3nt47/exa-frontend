@@ -15,6 +15,7 @@
   let stage = 1;
   let nextBtn, prevBtn;
   let avatar = null;
+  let questionIndex = 0;
 
   // Reset success and error messages
   const clearMessages = () => {
@@ -105,10 +106,34 @@
       error = "Options not defined!";
       return false;
     }
-    fields.questions.push(fields.newQuestion);
-    fields.newQuestion = createQuestion();
+    if (questionIndex < fields.questions.length){ // Changing an existing question?
+      fields.questions[questionIndex] = question;
+      questionIndex++;
+      fields.newQuestion = fields.questions[questionIndex];
+      if (!fields.newQuestion)
+        fields.newQuestion = createQuestion();
+    }else{    
+      fields.questions.push(fields.newQuestion);
+      questionIndex++;
+      fields.newQuestion = createQuestion();
+    }
     updateCache();
     document.getElementById('question').focus();
+  };
+
+  // Handle keyup event on final option of a question to make adding questions easier.
+  const finalOptionKeyup = (e) => {
+    if (e.key === 'Enter' || e.keyCode === 13)
+      addQuestion();
+  };
+
+  // Jump to a question at the given index.
+  const gotoQuestion = (index) => {
+    questionIndex = index;
+    if (questionIndex >= fields.questions.length)
+      fields.newQuestion = createQuestion();
+    else
+      fields.newQuestion = fields.questions[questionIndex];
   };
 
   // Makes the course creation request.
@@ -189,11 +214,24 @@
     updateCache();
   }
 
+  // Start/resume question creations.
+  gotoQuestion(fields.questions.length);
+
 </script>
 
 <h3>New Course</h3>
-<div class="w-1/2 mx-auto p-5 bg-gray-300 shadow-md shadow-gray-600">
-  <form in:fade={{duration: 300}}>
+<div class={stage !== 3 ? `w-1/2 mx-auto p-5 bg-gray-300 shadow-md shadow-gray-600` : 'w-3/4 flex gap-5 mx-auto items-start'}>
+  {#if (stage === 3)}
+    <div class="w-1/3 grid grid-cols-5 gap-2 bg-gray-300 shadow-md shadow-gray-600 p-2">
+      <h4 class="col-span-5 text-2xl text-center pb-5">Questions</h4>
+      {#each fields.questions as question, index}
+        <div  on:click={() => gotoQuestion(index)} class={`text-center text-xl p-1 cursor-pointer bg-gray-400 rounded-md hover:bg-blue-600 transition-colors duration-100 ${questionIndex === index ? 'bg-blue-600' : (question.answer !== -1 && questionIndex !== index ? 'bg-green-600' : '')}`}>
+          {index + 1}
+        </div>
+      {/each}
+    </div>
+  {/if}
+  <form in:fade={{duration: 300}} class={stage === 3 ? 'w-full p-5 bg-gray-300 shadow-md shadow-gray-600' : ''}>
     {#if (stage === 1)}
       <div in:fade={{duration: 200}}>
         <h4 class="text-center text-2xl mb-5 italic">Course Info</h4>
@@ -224,14 +262,14 @@
     {:else if (stage === 3)}
       <div in:fade={{duration: 200}}>
         <h4 class="text-center text-2xl mb-5 italic">Test Questions</h4>
-        <label for="question">Question ({fields.questions.length + 1}):</label>
+        <label for="question">Question ({questionIndex + 1}):</label>
         <textarea class="leading-5 p-2" name="question" id="question" rows="4" spellcheck="false" placeholder="Question..." bind:value={fields.newQuestion.question} required></textarea>
         <label for="options">Options:</label>
         <div id="options">        
           <input type="text" spellcheck="false" placeholder="Option 1..." bind:value={fields.newQuestion.options[0]} required>
           <input type="text" spellcheck="false" placeholder="Option 2..." bind:value={fields.newQuestion.options[1]} required>
           <input type="text" spellcheck="false" placeholder="Option 3..." bind:value={fields.newQuestion.options[2]} required>
-          <input type="text" spellcheck="false" placeholder="Option 4..." bind:value={fields.newQuestion.options[3]} required>
+          <input type="text" spellcheck="false" placeholder="Option 4..." bind:value={fields.newQuestion.options[3]} on:keyup={finalOptionKeyup} required>
         </div>
         <label for="answer">Correct Answer:</label>
         <div id="answer" class="w-full space-x-2 text-center mt-2">
@@ -244,8 +282,6 @@
           <Button type="secondary" on:click={addQuestion}>Add Question</Button>
         </div>
       </div>
-    {:else}
-      <p>You are in stage {stage}</p>
     {/if}
     <SuccessMsg {success}/>
     <ErrorMsg {error}/>
