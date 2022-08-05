@@ -7,7 +7,7 @@
 
 </script>
 
-<div class="w-full flex gap-2">
+<div class="w-full flex gap-2 overflow-clip">
   <img class="h-28 w-2/5 rounded-md" src={`${session.api}/${course.avatar}`} alt="">
   <div class="w-full">
      <table class="w-full">
