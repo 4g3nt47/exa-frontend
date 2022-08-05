@@ -173,7 +173,7 @@
           </div>
         {/if}
         <div class="flex gap-2 w-2/3 mx-auto mt-5">
-          <input class="block w-2/3 border-2 pl-1 border-black rounded-md" id="username" type="text" placeholder="Username..." bind:value={username} on:keyup={usernameEntered}>
+          <input class="block w-2/3 border-2 pl-1 border-black rounded-md" id="username" type="text" placeholder="Username..." bind:value={username} on:keyup={usernameEntered} autocomplete="off">
           <div class="w-1/3">
             <Button bind:btn={checkResultBtn} on:click={checkResult}>Check Result</Button>
           </div>
