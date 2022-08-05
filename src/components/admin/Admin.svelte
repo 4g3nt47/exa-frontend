@@ -7,6 +7,7 @@
   import CreateCourse from './CreateCourse.svelte';
   import ManageCourses from './ManageCourses.svelte';
   import ManageUsers from './ManageUsers.svelte';
+  import EventLogs from './EventLogs.svelte';
   
   export let session = {};
   const dispatch = createEventDispatcher();
@@ -46,7 +47,7 @@
 {:else if (page === 'manageUsers')}
   <ManageUsers {session}/>
 {:else if (page === 'eventLogs')}
-  <h3>Event Logs</h3>
+  <EventLogs {session}/>
 {/if}
 {#if (page !== 'main')}
   <div class="w-full mt-10 border-t border-t-black">

@@ -138,19 +138,19 @@
         {/if}
       </table>
       {#if (course.password && course.activeTest !== true)}
-        <div class="w-1/2 mx-auto text-right my-5">
+        <div class="w-1/2 mx-auto text-right my-2">
           <input class="block w-full my-1 mb-3 leading-7 border-2 border-black rounded-md px-1" type="password" placeholder="Password..." bind:value={password}>
         </div>
       {/if}
+      <div class="mx-5 mb-2">
+        <SuccessMsg {success}/>
+        <ErrorMsg {error}/>
+      </div>
       <div class="flex gap-2 mx-16">
         <Button type="secondary" bind:btn={backBtn} on:click={back}>Back</Button>
         {#if (!completed)}
           <Button type="primary" bind:btn={startBtn} on:click={startTest}>{(course.activeTest ? 'Resume' : 'Start')}</Button>
         {/if}
-      </div>
-      <div class="mx-5">
-        <SuccessMsg {success}/>
-        <ErrorMsg {error}/>
       </div>
     </div>
   </div>

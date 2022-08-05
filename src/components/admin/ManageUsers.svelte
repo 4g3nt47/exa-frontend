@@ -12,6 +12,7 @@
   let success = "", error = "";
   let username = "", findBtn;
   let profile = null;
+  let toggleAdminBtn, wipeResultsBtn, deleteAccountBtn;
 
   const clearMessages = () => {
     success = "";
@@ -47,6 +48,77 @@
     }
   };
 
+  const toggleAdmin = async () => {
+
+    clearMessages();
+    toggleAdminBtn.innerText = (profile.admin ? 'Revoking...' : 'Granting...');
+    toggleAdminBtn.disabled = true;
+    try{
+      const res = await fetch(`${session.api}/user/admin/${(profile.admin ? 'revoke' : 'grant')}/${profile.username}`, {
+        credentials: 'include'
+      });
+      const data = await res.json();
+      if (res.status !== 200)
+        throw new Error(data.error);
+      profile.admin = (!profile.admin);
+    }catch(err){
+      error = err.message;
+    }finally{
+      toggleAdminBtn.disabled = false;
+      toggleAdminBtn.innerText = (profile.admin ? 'Revoke Admin' : 'Grant Admin');
+    }
+  };
+
+  const wipeResults = async () => {
+
+    if (!confirm(`Delete all results for '${profile.username}'?`))
+      return;
+    clearMessages();
+    wipeResultsBtn.innerText = "Wiping...";
+    wipeResultsBtn.disabled = true;
+    try{
+      const res = await fetch(`${session.api}/user/results/${profile.username}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+      const data = await res.json();
+      if (res.status !== 200)
+        throw new Error(data.error);
+      profile.results = [];
+    }catch(err){
+      error = err.message;
+    }finally{
+      wipeResultsBtn.disabled = false;
+      wipeResultsBtn.innerText = "Wipe Results";
+    }
+  };
+
+  const deleteAccount = async () => {
+
+    if (!confirm(`Delete account for '${profile.username}'?`))
+      return;
+    clearMessages();
+    deleteAccountBtn.innerText = "Deleting...";
+    deleteAccountBtn.disabled = true;
+    try{
+      const res = await fetch(`${session.api}/user/${profile.username}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+      const data = await res.json();
+      if (res.status !== 200)
+        throw new Error(data.error);
+      success = "Account deleted!";
+      profile = null;
+      username = "";
+    }catch(err){
+      error = err.message;
+    }finally{
+      deleteAccountBtn.disabled = false;
+      deleteAccountBtn.innerText = "Delete Account";
+    }
+  };
+
   onMount(() => {
     document.getElementById("username").focus();
   });
@@ -72,11 +144,10 @@
           </div>
         {/each}
       {/if}
-      <div class="w-full grid grid-cols-2 gap-2 mt-5">
-        <Button>{profile.admin === true ? 'Revoke Admin' : 'Grant Admin'}</Button>
-        <Button>Lock Account</Button>
-        <Button type="danger">Wipe Results</Button>
-        <Button type="danger">Delete Account</Button>
+      <div class="w-full flex gap-2 mt-5">
+        <Button bind:btn={toggleAdminBtn} on:click={toggleAdmin}>{profile.admin === true ? 'Revoke Admin' : 'Grant Admin'}</Button>
+        <Button bind:btn={wipeResultsBtn} on:click={wipeResults} type="danger">Wipe Results</Button>
+        <Button bind:btn={deleteAccountBtn} on:click={deleteAccount} type="danger">Delete Account</Button>
       </div>
     </div>
   {/if}
