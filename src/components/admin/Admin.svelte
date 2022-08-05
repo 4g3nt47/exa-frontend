@@ -48,7 +48,7 @@
 {/if}
 {#if (page !== 'main')}
   <div class="w-full mt-10 border-t border-t-black">
-    <div class="w-1/3 mx-auto mt-3">
+    <div class="w-1/4 mx-auto mt-3">
       <Button type="secondary" on:click={() => switchPage('main')}>Back</Button>
     </div>
   </div>

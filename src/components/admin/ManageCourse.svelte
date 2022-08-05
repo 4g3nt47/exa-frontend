@@ -25,6 +25,11 @@
     error = "";
   };
 
+  const usernameEntered = (e) => {
+    if (e.key === 'Enter' || e.keyCode === 13)
+      checkResult();
+  };
+
   const checkResult = async () => {
 
     courseResult = null;
@@ -168,7 +173,7 @@
           </div>
         {/if}
         <div class="flex gap-2 w-2/3 mx-auto mt-5">
-          <input class="block w-2/3 border-2 pl-1 border-black rounded-md" id="username" type="text" placeholder="Username..." bind:value={username}>
+          <input class="block w-2/3 border-2 pl-1 border-black rounded-md" id="username" type="text" placeholder="Username..." bind:value={username} on:keyup={usernameEntered}>
           <div class="w-1/3">
             <Button bind:btn={checkResultBtn} on:click={checkResult}>Check Result</Button>
           </div>
@@ -183,7 +188,7 @@
         <ErrorMsg {error}/>        
       </div>
       <div class="w-1/2 mx-auto flex flex-col space-y-2">
-        <Button on:click={() => {resultCheckMode = true; clearMessages();}}>Check Results</Button>
+        <Button on:click={() => {resultCheckMode = true; username = ""; clearMessages();}}>Check Results</Button>
         <Button bind:btn={exportResultsBtn} on:click={exportResults}>Export Results</Button>
         <Button bind:btn={exportQuestionsBtn} on:click={exportQuestions}>Export Questions</Button>
         <Button type="danger" bind:btn={deleteResultsBtn} on:click={deleteResults}>Delete Results</Button>
