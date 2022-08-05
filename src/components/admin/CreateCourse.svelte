@@ -136,6 +136,54 @@
       fields.newQuestion = fields.questions[questionIndex];
   };
 
+  // Handles questions import from local .json files.
+  const importQuestions = () => {
+
+    clearMessages();
+    const file = document.getElementById("questions-import");
+    if (!file.value)
+      return;
+    if (!file.value.endsWith(".json")){
+      file.value = null;
+      error = "Only .json files are allowed!";
+      return;
+    }
+    const reader = new FileReader();
+    reader.onerror = () => { // Error loading the file.
+      error = "Error importing questions!";
+    }
+    reader.onload = () => { // File loaded successfully.
+      try{
+        const data = JSON.parse(reader.result); // Parse it
+        // Validate the questions.
+        const validated = [];
+        for (let i = 0; i < data.length; i++){
+          const question = data[i];
+          const newQuestion = {
+            question: question.question.toString(),
+            options: question.options,
+            answer: parseInt(question.answer)
+          };
+          if (newQuestion.options.length !== 4)
+            throw new Error(`Failed to validate question ${i+1}: invalid options!`);
+          if (!(newQuestion.answer >= 0 && newQuestion.answer <= 3))
+            throw new Error(`Failed to validate question ${i+1}: invalid answer!`);
+          validated.push(newQuestion);
+        }
+        // Add them to the queue.
+        for (let question of validated)
+          fields.questions.push(question);
+        gotoQuestion(fields.questions.length);
+        success = `${validated.length} questions imported!`;
+      }catch(err){
+        error = err.message;
+      }finally{
+        file.value = null;
+      }
+    }
+    reader.readAsBinaryString(file.files[0]);
+  };
+
   // Makes the course creation request.
   const createCourse = async () => {
     
@@ -245,6 +293,8 @@
         <input type="datetime-local" id="release-date" name="release-date" bind:value={fields.releaseDate} required>
         <label for="password">Password (optional):</label>
         <input type="password" id="password" name="password" placeholder="Course password..." bind:value={fields.password}>
+        <label for="questions-import">Import Questions (optional):</label>
+        <input class="w-full my-2" type="file" id="questions-import" on:change={importQuestions}>
       </div>
     {:else if (stage === 2)}
       <div in:fade={{duration: 200}}>
@@ -266,16 +316,16 @@
         <textarea class="leading-5 p-2" name="question" id="question" rows="4" spellcheck="false" placeholder="Question..." bind:value={fields.newQuestion.question} required></textarea>
         <label for="options">Options:</label>
         <div id="options">        
-          <input type="text" spellcheck="false" placeholder="Option 1..." bind:value={fields.newQuestion.options[0]} required>
-          <input type="text" spellcheck="false" placeholder="Option 2..." bind:value={fields.newQuestion.options[1]} required>
-          <input type="text" spellcheck="false" placeholder="Option 3..." bind:value={fields.newQuestion.options[2]} required>
-          <input type="text" spellcheck="false" placeholder="Option 4..." bind:value={fields.newQuestion.options[3]} on:keyup={finalOptionKeyup} required>
+          <input class={fields.newQuestion.answer === 0 ? 'bg-green-400' : ''} type="text" spellcheck="false" placeholder="Option 1..." bind:value={fields.newQuestion.options[0]} required>
+          <input class={fields.newQuestion.answer === 1 ? 'bg-green-400' : ''} type="text" spellcheck="false" placeholder="Option 2..." bind:value={fields.newQuestion.options[1]} required>
+          <input class={fields.newQuestion.answer === 2 ? 'bg-green-400' : ''} type="text" spellcheck="false" placeholder="Option 3..." bind:value={fields.newQuestion.options[2]} required>
+          <input class={fields.newQuestion.answer === 3 ? 'bg-green-400' : ''} type="text" spellcheck="false" placeholder="Option 4..." bind:value={fields.newQuestion.options[3]} on:keyup={finalOptionKeyup} required>
         </div>
         <label for="answer">Correct Answer:</label>
         <div id="answer" class="w-full space-x-2 text-center mt-2">
           <input type="radio" id="answer-0" name="answer" on:click={() => fields.newQuestion.answer = 0} checked><label for="answer-0">Option A</label>
           <input type="radio" id="answer-1" name="answer" on:click={() => fields.newQuestion.answer = 1}><label for="answer-1">Option B</label>
-          <input type="radio" id="answer-2" name="answer" on:click={() => fields.newQuestion.answer = 2}><label for="answer-2">Option C</label>
+          <input type="radio" id="answer-2" name="answer" on:click={() => fields.newQuestion.answer = 2}><label for="answer-2" checked="checked">Option C</label>
           <input type="radio" id="answer-3" name="answer" on:click={() => fields.newQuestion.answer = 3}><label for="answer-3">Option D</label>
         </div>
         <div class="w-1/3 mt-5 mx-auto">
