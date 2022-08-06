@@ -12,6 +12,7 @@
   import Login from './components/Login.svelte';
   import Profile from './components/Profile.svelte';
   import Admin from './components/admin/Admin.svelte';
+  import About from './components/About.svelte';
   import CourseList from './components/course/CourseList.svelte';
   
   /**
@@ -99,37 +100,40 @@
 
 </script>
 
-<main class="main-page mx-auto">
-  <!-- The header -->
-  <Header {session} on:switchPage={switchPage}/>
-  <!-- The body/content -->
-  <div class="main-content px-5">
-    {#if (session.page === "Home")}
-      <div in:fade={{duration: 200}}>        
-        <CourseList {session} on:switchPage={switchPage}/>
-      </div>
-    {:else if (session.page === "Register")}
-      <div in:fade={{duration: 200}}>
-        <Register {session} on:switchPage={switchPage}/>
-      </div>
-    {:else if (session.page === "Login" || session.page === "Logout")}
-      <div in:fade={{duration: 200}}>
-        <Login {session} on:switchPage={switchPage} on:updateSession={updateSession}/>
-      </div>
-    {:else if (session.page === "Profile")}
-      <div in:fade={{duration: 200}}>
-        <Profile {session} />
-      </div>
-    {:else if (session.page === "Admin" && session.admin === true)}
-      <div in:fade={{duration: 200}}>
-        <Admin {session} on:updateSession={updateSession}/>
-      </div>
-    {:else}
-      <div>
-        <h3>Invalid page: {session.page}</h3>
-      </div>
-    {/if}
-  </div>
-  <!-- The footer -->
-  <Footer />
-</main>
+<!-- Use media query to detect mobile/small screens -->
+{#if (window.matchMedia('screen and (max-width: 760px)').matches === false)}
+  <main class="main-page mx-auto">
+    <!-- The header -->
+    <Header {session} on:switchPage={switchPage}/>
+    <!-- The body/content -->
+    <div class="main-content px-5">
+      {#if (session.page === "Home")}
+        <div in:fade={{duration: 200}}>        
+          <CourseList {session} on:switchPage={switchPage}/>
+        </div>
+      {:else if (session.page === "Register")}
+        <div in:fade={{duration: 200}}>
+          <Register {session} on:switchPage={switchPage}/>
+        </div>
+      {:else if (session.page === "Login" || session.page === "Logout")}
+        <div in:fade={{duration: 200}}>
+          <Login {session} on:switchPage={switchPage} on:updateSession={updateSession}/>
+        </div>
+      {:else if (session.page === "Profile")}
+        <div in:fade={{duration: 200}}>
+          <Profile {session} />
+        </div>
+      {:else if (session.page === "Admin" && session.admin === true)}
+        <div in:fade={{duration: 200}}>
+          <Admin {session} on:updateSession={updateSession}/>
+        </div>
+      {:else}
+        <About />
+      {/if}
+    </div>
+    <!-- The footer -->
+    <Footer />
+  </main>
+{:else}
+  <p>Mobile/small screens currently not supported :(</p>
+{/if}
