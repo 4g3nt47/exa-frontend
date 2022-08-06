@@ -20,7 +20,7 @@
    */
   const createSession = () => {
     return {
-      api: "http://localhost:3000",
+      api: import.meta.env.VITE_EXA_API,
       username: "",
       loggedIn: false,
       admin: false,
