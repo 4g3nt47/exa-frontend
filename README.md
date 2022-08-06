@@ -1,8 +1,8 @@
 # Exa
 
-![](/public/admin-menu.png)
+![](/public/img/admin-menu.png)
 
-![](/public/test-view.png)
+![](/public/img/test-view.png)
 
 **Exa** - a web application designed to serve as a platform to create and administer online tests/examinations. The tests (refered to as 'courses') are made up of sets of questions that are randomly selected and used to assess a user/student over a predefined period of time.
 
