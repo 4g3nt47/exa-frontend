@@ -1,5 +1,14 @@
 <script>
-  // This component is represents a single course item listed in the home page.
+  
+  /**
+   * @file A clickable course item display.
+   * @author Umar Abdul (https://github.com/4g3nt47)
+   * Props:
+   *        session - The session object.
+   *        course - The course to display.
+   * Emits:
+   *        click - When a course is selected. Selected course accessible as e.detail
+   */
 
   import {createEventDispatcher} from 'svelte';
   import CourseInfo from './CourseInfo.svelte';
@@ -13,11 +22,3 @@
 <div class="flex items-center gap-2 bg-gray-300 p-2 rounded-lg shadow-md shadow-gray-600 cursor-pointer opacity-90 hover:opacity-100 duration-200" on:click={() => dispatch('click', course)}>
   <CourseInfo {session} {course}/>
 </div>
-
-<style>
-  table tr:nth-child(even){
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    background-color: #e7e7e7;
-  }
-</style>

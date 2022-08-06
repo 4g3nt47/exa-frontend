@@ -1,6 +1,14 @@
 <script>
 
-  // This component handles interactive course creation. For admins only.
+  /**
+   * @file Handles interactive course creation. 
+   * @author Umar Abdul (https://github.com/4g3nt47)
+   * Props:
+   *        session - The session object. 
+   * Emits:
+   *        updateSession - For session update.
+   *        abort - For aborting course creation.
+   */
 
   import {createEventDispatcher} from 'svelte';
   import {scale, fade, slide} from 'svelte/transition';
@@ -17,13 +25,18 @@
   let avatar = null;
   let questionIndex = 0;
 
-  // Reset success and error messages
+  /**
+   * Clear success and error messages.
+   */
   const clearMessages = () => {
     success = "";
     error = "";
   };
 
-  // Returns a question template
+  /**
+   * Creates a new question template.
+   * @return {object} The new question.
+   */
   const createQuestion = () => {
     return {
       question: "",
@@ -45,20 +58,26 @@
     questions: []
   };
 
-  // Caches the course data, and update the main session. Saves us from data loss on page reload.
+  /**
+   * Caches the course data, and update the main session. Saves us from data loss on page reload.
+   */
   const updateCache = () => {
     session.cache.createCourseFields = fields;
     session.cache.createCourseFields.stage = stage;
     dispatch('updateSession', session);
   };
 
-  // Return to main admin menu.
+  /**
+   * Return to main admin menu.
+   */
   const abort = () => {
     session.cache.createCourseFields = undefined;
     dispatch('abort');
   };
 
-  // Goes back to previous form. Aborts course creation if on the first form (after confirmation)
+  /**
+   * Goes back to previous form. Aborts course creation if on the first form (after confirmation)
+   */
   const gotoPrevious = () => {
 
     clearMessages();
@@ -71,7 +90,9 @@
     }
   }
   
-  // Go to the next form. Submit new course data if we are on the final form already.
+  /**
+   * Go to the next form. Submit new course data if we are on the final form already.
+   */
   const gotoNext = () => {
 
     clearMessages();
@@ -93,7 +114,10 @@
     updateCache();
   }
 
-  // Queue a question, and create a new one.
+  /**
+   * Queue a question, and create a new one.
+   * @return {boolean} true on success.
+   */
   const addQuestion = () => {
     
     clearMessages();
@@ -119,15 +143,22 @@
     }
     updateCache();
     document.getElementById('question').focus();
+    return true;
   };
 
-  // Handle keyup event on final option of a question to make adding questions easier.
+  /**
+   * Handle keyup events on final option of a question to make adding questions easier.
+   * @param {object} e - The event object.
+   */
   const finalOptionKeyup = (e) => {
     if (e.key === 'Enter' || e.keyCode === 13)
       addQuestion();
   };
 
-  // Jump to a question at the given index.
+  /**
+   * Jump to a question at the given index.
+   * @param {number} index - The index of the question (from 0)
+   */
   const gotoQuestion = (index) => {
     questionIndex = index;
     if (questionIndex >= fields.questions.length)
@@ -136,7 +167,9 @@
       fields.newQuestion = fields.questions[questionIndex];
   };
 
-  // Handles questions import from local .json files.
+  /**
+   * Handles questions import from local .json files.
+   */
   const importQuestions = () => {
 
     clearMessages();
@@ -184,7 +217,9 @@
     reader.readAsBinaryString(file.files[0]);
   };
 
-  // Makes the course creation request.
+  /**
+   * Makes the course creation request.
+   */
   const createCourse = async () => {
     
     clearMessages();
@@ -268,8 +303,10 @@
 </script>
 
 <h3>New Course</h3>
+<!-- The primary div. Set display to flex if we are adding questions so we can have a side bar of questions nav -->
 <div class={stage !== 3 ? `w-1/2 mx-auto p-5 bg-gray-300 shadow-md shadow-gray-600` : 'w-3/4 flex gap-5 mx-auto items-start'}>
   {#if (stage === 3)}
+    <!-- Questions nav menu -->
     <div class="w-1/3 grid grid-cols-5 gap-2 bg-gray-300 shadow-md shadow-gray-600 p-2">
       <h4 class="col-span-5 text-2xl text-center pb-5">Questions</h4>
       {#each fields.questions as question, index}
@@ -281,6 +318,7 @@
   {/if}
   <form in:fade={{duration: 300}} class={stage === 3 ? 'w-full p-5 bg-gray-300 shadow-md shadow-gray-600' : ''}>
     {#if (stage === 1)}
+      <!-- Course Info form -->
       <div in:fade={{duration: 200}}>
         <h4 class="text-center text-2xl mb-5 italic">Course Info</h4>
         <label for="name">Course Name:</label>
@@ -297,6 +335,7 @@
         <input class="w-full my-2" type="file" id="questions-import" on:change={importQuestions}>
       </div>
     {:else if (stage === 2)}
+      <!-- Questions config and test duration form -->
       <div in:fade={{duration: 200}}>
         <h4 class="text-center text-2xl mb-5 italic">Test Info</h4>
         <label for="questions-count">Questions Per Test:</label>
@@ -310,6 +349,7 @@
         </div>
       </div>
     {:else if (stage === 3)}
+      <!-- Questions input form -->
       <div in:fade={{duration: 200}}>
         <h4 class="text-center text-2xl mb-5 italic">Test Questions</h4>
         <label for="question">Question ({questionIndex + 1}):</label>
@@ -333,8 +373,10 @@
         </div>
       </div>
     {/if}
+    <!-- Status messages -->
     <SuccessMsg {success}/>
     <ErrorMsg {error}/>
+    <!-- Some navigation buttons -->
     <div class="border-t border-black mt-5"></div>
     <div class="flex gap-2 mx-10 mt-5">
       <Button type="secondary" on:click={gotoPrevious} bind:btn={prevBtn}>Previous</Button>

@@ -1,6 +1,16 @@
 <script>
+
+  /**
+   * @file Displays some info about a user.
+   * @author Umar Abdul (https://github.com/4g3nt47)
+   * Props:
+   *        session - The session object.
+   *        profile - The user profile.
+   */
+
   export let session = {};
   export let profile = {};  
+
 </script>
 
 <div class="flex items-center">

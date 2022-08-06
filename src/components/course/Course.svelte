@@ -1,6 +1,14 @@
 <script>
 
-  // This component displays course data when clicked, and handles the starting of tests.
+  /**
+   * @file The course display component used when starting a test
+   * @author Umar Abdul (https://github.com/4g3nt47)
+   * Props:
+   *        session - The session object.
+   *        course - The target course.
+   * Emits:
+   *        back - For going back to the main menu.
+   */
   
   import {onMount, onDestroy, createEventDispatcher} from 'svelte';
   import Button from '../Button.svelte';
@@ -20,17 +28,24 @@
   let completed = false, released = false;
   let releaseTime = "", countdown = null;
 
+  /**
+   * Clear status messages.
+   */
   const clearMessages = () => {
     success = "";
     error = "";
-  }
+  };
 
-  // Go back to homepage.
+  /**
+   * Go back to home page.
+   */
   const back = () => {
     dispatch("back");
   };
 
-  // Starts the test.
+  /**
+   * Starts the course test.
+   */
   const startTest = async () => {
 
     clearMessages();
@@ -63,6 +78,9 @@
     }
   };
 
+  /**
+   * Handles the 'finish' event emitted by the CourseTest component when user finishes the test.
+   */
   const testFinished = () => {
 
     completed = true;
@@ -71,7 +89,9 @@
     success = "Congratulations! Your result should be in your profile.";
   };
 
-  // Do some initialization.
+  /**
+   * Setup the component.
+   */
   onMount(() => {
     // Init our course release countdown if needed.
     if (Date.now() < course.releaseDate){ // Course not yet released.

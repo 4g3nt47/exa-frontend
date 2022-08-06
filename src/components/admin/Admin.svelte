@@ -1,6 +1,13 @@
 <script>
 
-  // The admin panel component.
+  /**
+   * @file The admin panel component.
+   * @author Umar Abdul (https://github.com/4g3nt47)
+   * Props:
+   *        session - The session object.
+   * Emits:
+   *        updateSession - For updating session data.
+   */
 
   import {createEventDispatcher} from 'svelte';
   import Button from '../Button.svelte';
@@ -16,15 +23,20 @@
   if (session.subPage)
     page = session.subPage;
 
-  // Used for local navigation
+  /**
+   * Handles local navigation.
+   * @param {string} newPage - The new page to go to.
+   */
   const switchPage = (newPage) => {
     page = newPage;
     session.subPage = page;
     dispatch('updateSession', session);
   };
+
 </script>
 
 {#if (page === 'main')}
+  <!-- The admin panel main menu -->
   <h3>Admin Panel</h3>
   <div class="admin-panel w-3/4 p-2 mt-5 mx-auto">
     <div class="admin-menu-card create-menu text-white" on:click={() => switchPage('newCourse')}>
@@ -40,6 +52,7 @@
       Event Logs
     </div>
   </div>
+<!-- Sub pages. -->
 {:else if (page === 'newCourse')}
   <CreateCourse {session} on:updateSession on:abort={() => switchPage('main')}/>
 {:else if (page === 'manageCourse')}
@@ -50,6 +63,7 @@
   <EventLogs {session}/>
 {/if}
 {#if (page !== 'main')}
+  <!-- Back button -->
   <div class="w-full mt-10 border-t border-t-black">
     <div class="w-1/4 mx-auto mt-3">
       <Button type="secondary" on:click={() => switchPage('main')}>Back</Button>

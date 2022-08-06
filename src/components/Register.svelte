@@ -1,6 +1,13 @@
 <script>
 
-  // Our component for registering users.
+  /**
+   * @file Handles user registration.
+   * @author Umar Abdul (https://github.com/4g3nt47)
+   * Props:
+   *        session - The session object.
+   * Emits:
+   *        switchPage - For switching pages after successful registration.
+   */
 
   import {onMount, createEventDispatcher} from 'svelte';
   import SuccessMsg from './SuccessMsg.svelte';
@@ -21,7 +28,9 @@
     name: ""
   };
 
-  // Performs user registration on form submit.
+  /**
+   * Perform the registration.
+   */
   const register = async () => {
 
     success = "";
@@ -62,10 +71,13 @@
     }
   };
 
-  // Focuses on username field
+  /**
+   * Focus on username field
+   */
   onMount(() => {
     document.getElementById('username').focus();
   });
+  
 </script>
 
 <h3>Register</h3>

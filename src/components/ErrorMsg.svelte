@@ -1,7 +1,15 @@
 <script>
-  //  Reusable component for displaying error messages.
+  
+  /**
+   * @file For displaying error messages.
+   * @author Umar Abdul (https://github.com/4g3nt47)
+   * Props:
+   *        error - The error message. Only displayed when truthy.
+   */
+
   import {slide} from 'svelte/transition';
-  export let error = ""; // The error to display.
+  export let error = "";
+
 </script>
 
 {#if (error)}

@@ -1,6 +1,12 @@
 <script>
   
-  // This component is used to display course info, including image.
+  /**
+   * @file Displays course info.
+   * @author Umar Abdul (https://github.com/4g3nt47)
+   * Props:
+   *        session - The session object.
+   *        course - The course to display.
+   */
 
   export let session = {};
   export let course = {};

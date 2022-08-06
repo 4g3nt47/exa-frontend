@@ -1,6 +1,13 @@
 <script>
 
-  // This component handles a course test started by a user.
+  /**
+   * @file Handles a course test.
+   * @author Umar Abdul (https://github.com/4g3nt47)
+   * Props:
+   *        session - The session object.
+   *        courseInfo - The course info.
+   *        course - The course test data.
+   */
 
   import {onMount, onDestroy, createEventDispatcher} from 'svelte';
   import {fade} from 'svelte/transition';
@@ -24,13 +31,18 @@
   let countdown = null;
   const optionLabels = ['A.', 'B.', 'C.', 'D.'];
 
-  // Clear success and error message
+  /**
+   * Clears status messages.
+   */
   const clearMessages = () => {
     success = "";
     error = "";
   };
 
-  // Jump to a question at the given index.
+  /**
+   * Jump to a question.
+   * @param {number} index - The index of the question.
+   */
   const goto = (index) => {
 
     if (freezeNavs)
@@ -40,7 +52,9 @@
     question = course.questions[index];
   };
 
-  // Jump to the next question.
+  /**
+   * Jump to the next question.
+   */
   const gotoNext = () => {
 
     if (freezeNavs)
@@ -54,7 +68,9 @@
     goto(questionIndex + 1);
   };
 
-  // Jump to the previous question.
+  /**
+   * Jump to the previous question.
+   */
   const gotoPrev = () => {
 
     if (freezeNavs)
@@ -64,7 +80,10 @@
       goto(questionIndex - 1);
   };
 
-  // Set/update the answer for a question.
+  /**
+   * Select/update the answer to a question.
+   * @param {number} index - The answer index (0 = 'A', 3 = 'D')
+   */
   const setAnswer = async (index) => {
     
     if (freezeNavs || submitting)
@@ -97,7 +116,9 @@
     }
   };
 
-  // Ends the test and re-submit all answers.
+  /**
+   * End the test.
+   */
   const finishTest = async () => {
     
     if (submitting)
@@ -143,6 +164,9 @@
     }
   };
 
+  /**
+   * Do some initiation.
+   */
   onMount(() => {
     // Start the countdown.
     countdown = new Countdown({
@@ -158,7 +182,9 @@
     countdown.start();
   });
 
-  // Cleanup
+  /**
+   * Cleanup.
+   */
   onDestroy(() => {
     countdown.stop();
   });

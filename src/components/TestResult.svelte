@@ -1,6 +1,12 @@
 <script>
 
-  // A component for displaying a test result. Used in user profile.
+  /**
+   * @file Displays course test result.
+   * @author Umar Abdul (https://github.com/4g3nt47)
+   * Profs:
+   *        result - The result data.
+   *        hideCourseInfo - Tells the component to hide some course data (name and title) if true.
+   */
 
   import {onMount} from 'svelte';
   import {Chart, registerables} from 'chart.js';
@@ -8,6 +14,9 @@
   export let result = {};
   export let hideCourseInfo = false; // Used to hide some info about the course.
 
+  /**
+   * Creates the result pie chart.
+   */
   onMount(() => {
 
     // Setup Chart.js and create a little pie chart for questions passed and failed.

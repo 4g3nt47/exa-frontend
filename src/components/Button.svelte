@@ -1,8 +1,20 @@
 <script>
-  // Reusable button components.
-  export let type = "primary";    // Button type (primary/secondary/danger).
-  export let btn = null;          // Used by parent components to access the button element. 
-  export let btnType = "button";  // Value `type` attribute of the button
+
+  /**
+   * @file Reusable button component. 
+   * @author Umar Abdul (https://github.com/4g3nt47)
+   * Props:
+   *        type - The type of the button, either 'primary', 'secondary', or 'danger'.
+   *        btnType - The value to pass to the 'type' attribute of the button element.
+   *        btn - Will be bound to the HTML button element. Used to control the button externally.
+   * Emits:
+   *        click - When the button is clicked.
+   */
+
+  export let type = "primary";
+  export let btnType = "button";
+  export let btn = null;
+
 </script>
 
 {#if (type === "primary")}

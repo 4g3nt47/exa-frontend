@@ -1,13 +1,16 @@
 <script>
 
   /**
-   *   Displays the list of courses available.
+   * @file Displays a list of available courses.
+   * @author Umar Abdul (https://github.com/4g3nt47)
    * Props:
    *   session         - The session object.
    *   handleSelection - Dictates whether this component should display the course clicked by
    *                     user using the 'Course' component. If false, 'selectCourse' event is emitted
    *                     with the selected course as detail.
-   */  
+   * Emits:
+   *   selectCourse - When a course is selected.
+   */
 
   import {onMount, createEventDispatcher} from 'svelte';
   import {scale, slide, fade} from 'svelte/transition';
@@ -23,6 +26,9 @@
   let selectedCourse = null; // Course selected by the user
   let error = "";
 
+  /**
+   * Loads available courses on mount.
+   */
   onMount(async () => {
 
     // Load courses
@@ -39,6 +45,10 @@
     }
   });
 
+  /**
+   * Handles course selection. Emits 'selectCourse'
+   * @param {object} e - The event object.
+   */
   const select = (e) => {
     if (handleSelection)
       selectedCourse = e.detail;

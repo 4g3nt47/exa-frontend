@@ -1,6 +1,11 @@
 <script>
 
-  // Profile component for logged in users.
+  /**
+   * @file Displays user profile.
+   * @author Umar Abdul (https://github.com/4g3nt47)
+   * Props:
+   *        session - The session object.
+   */
 
   import {onMount} from 'svelte';
   import Loader from './Loader.svelte';
@@ -13,7 +18,9 @@
   let profile = null; // Loaded profile data will be stored here
   let error = "";
 
-  // Load user data when component is mounted. Till then a load animation is displayed.
+  /**
+   * Load user data when component is mounted.
+   */
   onMount(async () => {
 
     try{

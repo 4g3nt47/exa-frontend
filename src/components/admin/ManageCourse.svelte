@@ -1,6 +1,14 @@
 <script>
   
-  // This component is used for managing an individual course by an admin.
+  /**
+   * @file The course management UI.
+   * @author Umar Abdul (https://github.com/4g3nt47)
+   * Props:
+   *        session - The session object.
+   *        course - The course being managed.
+   * Emits:
+   *        back - For going back to courses menu after the course was deleted.
+   */
 
   import {createEventDispatcher} from 'svelte';
   import {slide, scale, fade} from 'svelte/transition';
@@ -20,16 +28,26 @@
   let username = "", checkResultBtn;
   let courseResult = null;
 
+  /**
+   * Clear the status messages.
+   */
   const clearMessages = () => {
     success = "";
     error = "";
   };
 
+  /**
+   * Handles keyup events on the username input field for result checking.
+   * @param {object} e - The event object.
+   */
   const usernameEntered = (e) => {
     if (e.key === 'Enter' || e.keyCode === 13)
       checkResult();
   };
 
+  /**
+   * Fetch and display results of a user for the current course.
+   */
   const checkResult = async () => {
 
     courseResult = null;
@@ -65,6 +83,9 @@
     }
   };
 
+  /**
+   * Exports course results.
+   */
   const exportResults = async () => {
     
     clearMessages();
@@ -87,6 +108,9 @@
     }
   };
 
+  /**
+   * Exports course questions.
+   */
   const exportQuestions = async () => {
 
     clearMessages();
@@ -109,6 +133,9 @@
     }
   };
 
+  /**
+   * Deletes the test results of a user.
+   */
   const deleteResults = async () => {
 
     clearMessages();
@@ -133,6 +160,9 @@
     }
   };
 
+  /**
+   * Delete the current course.
+   */
   const deleteCourse = async () => {
 
     clearMessages();
@@ -164,6 +194,7 @@
   <CourseInfo {session} {course}/>
   <div class="w-full border-t border-black mt-5 pt-5">
     {#if (resultCheckMode)}
+      <!-- Results checking UI -->
       <div in:scale={{duration: 200}}>
         <SuccessMsg {success}/>
         <ErrorMsg {error}/>
@@ -188,6 +219,7 @@
         <ErrorMsg {error}/>        
       </div>
       <div class="w-1/2 mx-auto flex flex-col space-y-2">
+        <!-- The action buttons -->
         <Button on:click={() => {resultCheckMode = true; username = ""; clearMessages();}}>Check Results</Button>
         <Button bind:btn={exportResultsBtn} on:click={exportResults}>Export Results</Button>
         <Button bind:btn={exportQuestionsBtn} on:click={exportQuestions}>Export Questions</Button>

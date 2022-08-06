@@ -1,5 +1,12 @@
 <script>
   
+  /**
+   * @file The users management UI.
+   * @author Umar Abdul (https://github.com/4g3nt47)
+   * Props:
+   *        session - The session object.
+   */
+
   import {onMount} from 'svelte';
   import {slide} from 'svelte/transition';
   import Button from '../Button.svelte';
@@ -14,16 +21,26 @@
   let profile = null;
   let toggleAdminBtn, wipeResultsBtn, deleteAccountBtn;
 
+  /**
+   * Clear status messages.
+   */
   const clearMessages = () => {
     success = "";
     error = "";
   };
 
+  /**
+   * Handle keyup events on the username field.
+   * @param {object} e - The event object.
+   */
   const usernameKeyup = (e) => {
     if (e.key === 'Enter' || e.keyCode === 13)
       findUser();
   };
 
+  /**
+   * Handles user lookup.
+   */
   const findUser = async () => {
     
     if (!(username))
@@ -48,6 +65,9 @@
     }
   };
 
+  /**
+   * Grants or revoke admin privs of a user.
+   */
   const toggleAdmin = async () => {
 
     clearMessages();
@@ -69,6 +89,9 @@
     }
   };
 
+  /**
+   * Wipe the results of a user.
+   */
   const wipeResults = async () => {
 
     if (!confirm(`Delete all results for '${profile.username}'?`))
@@ -93,6 +116,9 @@
     }
   };
 
+  /**
+   * Delete the account of a user.
+   */
   const deleteAccount = async () => {
 
     if (!confirm(`Delete account for '${profile.username}'?`))
@@ -119,6 +145,9 @@
     }
   };
 
+  /**
+   * Focus on username input field on load.
+   */
   onMount(() => {
     document.getElementById("username").focus();
   });
@@ -127,6 +156,7 @@
 
 <h3>Users</h3>
 <div class="w-2/3 bg-gray-300 mx-auto shadow-md shadow-gray-600 p-5">
+  <!-- User lookup section -->
   <div class="w-2/3 mx-auto flex gap-2 mb-5">
     <input class="block w-2/3 border-2 pl-1 border-black rounded-md" type="text" id="username" bind:value={username} placeholder="Username..." autocomplete="off" on:keyup={usernameKeyup}>
     <div class="w-1/3">
@@ -135,6 +165,7 @@
   </div>
   {#if (profile)}
     <div transition:slide|local={{duration: 200}}>
+      <!-- Display user info -->
       <UserInfo {session} {profile}/>
       {#if (profile.results.length > 0)}
         <h5 class="text-center my-10 text-xl">Results</h5>
@@ -144,6 +175,7 @@
           </div>
         {/each}
       {/if}
+      <!-- Action buttons -->
       <div class="w-full flex gap-2 mt-5">
         <Button bind:btn={toggleAdminBtn} on:click={toggleAdmin}>{profile.admin === true ? 'Revoke Admin' : 'Grant Admin'}</Button>
         <Button bind:btn={wipeResultsBtn} on:click={wipeResults} type="danger">Wipe Results</Button>
@@ -151,6 +183,7 @@
       </div>
     </div>
   {/if}
+  <!-- Status messages -->
   <div>
     <SuccessMsg {success}/>
     <ErrorMsg {error}/>

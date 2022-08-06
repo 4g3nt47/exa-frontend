@@ -1,6 +1,14 @@
 <script>
   
-  // Our user login component
+  /**
+   * @file Handles user login.
+   * @author Umar Abdul (https://github.com/4g3nt47)
+   * Props:
+   *        session - The session object.
+   * Emits:
+   *        updateSession - For updating session data.
+   *        switchPage - For switching to home page after successful authentication.
+   */
 
   import {onMount, createEventDispatcher} from 'svelte';
   import SuccessMsg from './SuccessMsg.svelte';
@@ -14,7 +22,9 @@
   let fields = {username: "", password: ""}; // Will be bound to login form params
   let submitBtn;
 
-  // Performs the login. Called on form submit.
+  /**
+   * Performs the login.
+   */
   const login = async () => {
     
     // Clear success and error messages.
@@ -48,10 +58,13 @@
     }
   };
 
-  // Focus on username field when component is mounted (Svelte hates it when I use `autofocus`)
+  /**
+   * Focus on username field when component is mounted (Svelte hates it when I use `autofocus`)
+   */
   onMount(() => {
     document.getElementById('username').focus();
   });
+
 </script>
 
 <h3>Login</h3>

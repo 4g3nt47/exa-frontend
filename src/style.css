@@ -672,6 +672,10 @@ video {
   display: grid;
 }
 
+.contents {
+  display: contents;
+}
+
 .h-10 {
   height: 2.5rem;
 }
@@ -938,11 +942,6 @@ video {
 .bg-yellow-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(234 179 8 / var(--tw-bg-opacity));
-}
-
-.bg-gray-100 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-75 {

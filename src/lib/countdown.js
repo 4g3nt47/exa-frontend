@@ -1,29 +1,37 @@
 /**
- * A simple module for creating timer countdowns.
+ * A module for creating timed countdowns.
+ * @module Countdown
+ * @author Umar Abdul (https://github.com/4g3nt47)
  */
 
 class Countdown{
 
-  // Initializes the countdown
-
+  /**
+   * Initializes the countdown.
+   * @param {object} config - The countdown config.
+   */
   constructor(config){
 
     this.timer = null;
-    this.onUpdate = config.onUpdate;
-    this.onFinish = config.onFinish;
-    this.delay = config.delay || 1000;
-    this.target = config.target || 0;
-    this.strOutput = config.strOutput || false;
+    this.onUpdate = config.onUpdate; // Called for every countdown update.
+    this.onFinish = config.onFinish; // Called when countdown ran out.
+    this.delay = config.delay || 1000; // The delay in milliseconds.
+    this.target = config.target || 0; // The target time.
+    this.strOutput = config.strOutput || false; // Generates a string formatted output if true (days:hrs:mins:secs)
   }
 
-  // Start the countdown
+  /**
+   * Start the countdown.
+   */
   start(){
 
     if (this.timer === null)
       this.timer = setInterval(this.update.bind(this), this.delay);
   }
 
-  // Update the countdown.
+  /**
+   * Update the countdown. For internal user.
+   */
   update(){
 
     let diff = this.target - Date.now();
@@ -37,7 +45,9 @@ class Countdown{
     this.onUpdate(this.strOutput ? fmt : diff);
   }
 
-  // Stop the countdown
+  /**
+   * Stop the countdown.
+   */
   stop(){
 
     if (this.timer){

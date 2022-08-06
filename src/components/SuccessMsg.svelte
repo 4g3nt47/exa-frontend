@@ -1,7 +1,15 @@
 <script>
-  // Reusable component for displaying 'success' messages.
+
+  /**
+   * @file For displaying success messages.
+   * @author Umar Abdul (https://github.com/4g3nt47)
+   * Props:
+   *        success - The success message. Only displayed when truthy.
+   */
+
   import {slide} from 'svelte/transition';
-  export let success = ""; // The success message
+  export let success = "";
+
 </script>
 
 {#if (success)}
