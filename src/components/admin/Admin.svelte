@@ -42,10 +42,10 @@
     <div class="admin-menu-card create-menu text-white" on:click={() => switchPage('newCourse')}>
       Create Course
     </div>
-    <div class="admin-menu-card result-menu text-white" on:click={() => switchPage('manageCourse')}>
+    <div class="admin-menu-card courses-menu text-white" on:click={() => switchPage('manageCourse')}>
       Manage Courses
     </div>
-    <div class="admin-menu-card import-menu text-white" on:click={() => switchPage('manageUsers')}>
+    <div class="admin-menu-card users-menu text-white" on:click={() => switchPage('manageUsers')}>
       Manage Users
     </div>
     <div class="admin-menu-card event-menu text-white" on:click={() => switchPage('eventLogs')}>
@@ -83,13 +83,13 @@
     background-size: 100% 100%;
   }
 
-  .import-menu{
-    background: url('/img/import-course.jpeg');
+  .courses-menu{
+    background: url('/img/manage-course.jpeg');
     background-size: 100% 100%;
   }
 
-  .result-menu{
-    background: url('/img/export-result.jpeg');
+  .users-menu{
+    background: url('/img/users-menu.jpeg');
     background-size: 100% 100%;
   }
 
