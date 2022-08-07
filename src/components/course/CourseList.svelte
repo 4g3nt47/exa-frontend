@@ -32,6 +32,7 @@
   onMount(async () => {
 
     // Load courses
+    error = "";
     try{
       const rsp = await fetch(`${session.api}/course`, {
         credentials: 'include'
@@ -64,7 +65,7 @@
     {#if (courses === null && error.length === 0)}
       <Loader>Loading courses...</Loader>
     {:else}
-      {#if (courses.length === 0)}
+      {#if ((!courses) || courses.length === 0)}
         <ErrorMsg error="No course available at the moment!"/>
       {:else}
         <div class="courses">
