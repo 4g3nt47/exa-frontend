@@ -12,6 +12,10 @@ Each course has a name (which must be unique), a title, a release date, sets of 
 
 This is the front-end code for the program, which was made using Svelte. The backend code can be found [here](https://github.com/4g3nt47/exa-backend)
 
+## Live Instance
+
+You can access a live instance of this application [here](https://exa-js.netlify.app). You can log in using the test account username `guest` and password `exaTestUser2022!`
+
 ## Installation
 
 1. Clone the repo
